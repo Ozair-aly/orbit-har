@@ -2,244 +2,1715 @@
 
 ## AI Human Activity Recognition for On-Board BAS Experiments
 
-ORBIT-HAR is an edge-AI based Human Activity Recognition and Experiment Monitoring system designed for astronaut-assisted experiments in space environments.
+**ORBIT-HAR** is an AI-powered, edge-deployable Human Activity Recognition and Experiment Monitoring system designed for **on-board biological/physical science experiments in space missions**.
 
-The system uses computer vision and AI to monitor predefined experimental procedures, detect objects and hand interactions, recognize experiment actions, validate the correct sequence, identify wrong or out-of-sequence actions, and provide real-time feedback through a mission-control dashboard.
+The system allows an astronaut-side computer to locally monitor experimental activities using camera-based AI, recognize predefined actions, validate their sequence, detect incorrect or unexpected actions, and provide real-time feedback through a mission-control-style dashboard.
 
-The core AI processing runs locally on the astronaut-side system, while the mission-control dashboard receives experiment status, AI events, logs, and live camera monitoring through the ORBIT-HAR backend.
+The core idea is simple:
 
----
-
-## ✨ Key Features
-
-- 🎥 Live astronaut-side camera monitoring
-- 🤖 YOLO-based object detection
-- ✋ MediaPipe hand tracking
-- 🧠 AI-based activity/action recognition
-- 🔄 Predefined experiment sequence validation
-- ⚠️ Wrong-action and out-of-sequence detection
-- 📊 Real-time mission-control dashboard
-- 🌐 Live camera streaming to the dashboard
-- 📡 FastAPI backend communication
-- 🔌 WebSocket-based live dashboard updates
-- 📝 Experiment logging
-- 🔊 Voice feedback
-- 🛑 Dashboard-based experiment stopping
-- 🛰️ Local edge processing
-- 🧩 Configurable experiment definitions
-- 🧍 Human/pose experimentation support
-- 💻 Browser-based monitoring interface
+> **Run the intelligence where the experiment happens — instead of continuously sending raw video to Earth.**
 
 ---
 
-# 🛰️ System Architecture
+## 🛰️ Problem Statement
+
+### Smart India Hackathon — Problem Statement ID: 26174
+
+**AI Human Activity Recognition for On-board BAS Experiments**
+
+Biological and physical science experiments performed during space missions may require astronauts to follow a predefined sequence of actions.
+
+In a conventional setup, large amounts of camera data may need to be transmitted for monitoring and analysis.
+
+However, space missions introduce challenges such as:
+
+* Limited communication bandwidth
+* Communication delays
+* Limited opportunities for continuous ground monitoring
+* Large raw-video data volumes
+* Need for autonomous on-board decision making
+* Astronauts operating in microgravity where conventional spatial assumptions may not apply
+
+ORBIT-HAR addresses this by performing **local AI-based activity recognition and experiment validation at the edge**.
+
+---
+
+# 🎯 Project Objective
+
+ORBIT-HAR is designed to:
+
+* Detect astronaut actions using an onboard camera
+* Track relevant objects and hand interactions
+* Recognize predefined experiment activities
+* Validate whether actions occur in the correct sequence
+* Detect incorrect or unexpected actions
+* Provide immediate feedback
+* Maintain experiment logs
+* Display experiment status through a dashboard
+* Run without requiring continuous cloud connectivity
+* Support an astronaut-side edge computer
+* Provide a mission-control monitoring interface
+* Reduce dependence on transmitting raw video for analysis
+
+---
+
+# 🧠 Core Concept
+
+ORBIT-HAR follows an **edge-first architecture**.
 
 ```text
-                    ASTRONAUT-SIDE SYSTEM
-                    =====================
+                 ┌─────────────────────────┐
+                 │       Camera Feed       │
+                 └────────────┬────────────┘
+                              │
+                              ▼
+                 ┌─────────────────────────┐
+                 │   Computer Vision       │
+                 │                         │
+                 │  YOLO Object Detection  │
+                 │  MediaPipe Hand Track   │
+                 └────────────┬────────────┘
+                              │
+                              ▼
+                 ┌─────────────────────────┐
+                 │   Activity Recognition  │
+                 │                         │
+                 │ PICK_CONTAINER          │
+                 │ TILT_CONTAINER          │
+                 │ SHAKE_CONTAINER         │
+                 │ OPEN_VALVE              │
+                 │ UPRIGHT_CONTAINER       │
+                 │ PUTDOWN_CONTAINER       │
+                 └────────────┬────────────┘
+                              │
+                              ▼
+                 ┌─────────────────────────┐
+                 │ Sequence Validation     │
+                 │                         │
+                 │ Expected Action         │
+                 │ Detected Action         │
+                 │ Current Step            │
+                 │ Experiment State        │
+                 └────────────┬────────────┘
+                              │
+                 ┌────────────┴────────────┐
+                 ▼                         ▼
+        ┌─────────────────┐       ┌─────────────────┐
+        │ Local Feedback  │       │ Mission Control │
+        │                 │       │ Dashboard       │
+        │ Voice / Logs    │       │                 │
+        └─────────────────┘       └─────────────────┘
+```
 
-                         Camera
-                           │
-                           ▼
-                    ┌───────────────┐
-                    │   OpenCV      │
-                    │ Camera Capture │
-                    └───────┬───────┘
-                            │
-                            ▼
-                ┌───────────────────────┐
-                │     ORBIT-HAR AI      │
-                │                       │
-                │ YOLO Object Detection │
-                │ MediaPipe Hand Track  │
-                │ Motion Analysis       │
-                │ Action Recognition    │
-                │ Sequence Validation   │
-                └───────────┬───────────┘
-                            │
-             ┌──────────────┼──────────────┐
-             │              │              │
-             ▼              ▼              ▼
-        AI Events       Live Frames     Logs
-             │              │              │
-             └──────────────┼──────────────┘
-                            ▼
-                    ┌───────────────┐
-                    │ FastAPI       │
-                    │ Backend       │
-                    └───────┬───────┘
-                            │
-                  WebSocket / HTTP
-                            │
-                            ▼
-                 ┌────────────────────┐
-                 │ Mission-Control    │
-                 │ React Dashboard    │
-                 └────────────────────┘
-💻 Requirements
+The AI processing happens locally, while the resulting **events, states, detections and experiment information** can be sent to the monitoring dashboard.
 
-Before running ORBIT-HAR, make sure the system has:
+---
 
-Python 3.9+
-Node.js 18+
-npm
-Git
-A working camera
-macOS / Linux / Windows
+# ✨ Key Features
 
-Camera permissions must be enabled for the application/Python process.
+## 🤖 AI-Based Activity Recognition
 
-📥 Clone the Repository
+ORBIT-HAR processes live camera frames and identifies experiment-related activities.
 
-Open a terminal and run:
+The prototype currently supports actions such as:
 
-git clone https://github.com/h1e2l3l4o5/ORBIT-HAR.git
+* `PICK_CONTAINER`
+* `TILT_CONTAINER`
+* `SHAKE_CONTAINER`
+* `OPEN_VALVE`
+* `UPRIGHT_CONTAINER`
+* `PUTDOWN_CONTAINER`
 
-Then enter the project:
+The action vocabulary can be extended for additional experiments.
 
-cd ORBIT-HAR
-🐍 Backend / AI Environment Setup
+---
 
-Create a Python virtual environment:
+## 👋 Hand Tracking
 
-python3 -m venv venv
+MediaPipe Hands is used to track astronaut hand movement and interaction with experiment objects.
 
-Activate it.
+This provides additional information for:
 
-macOS / Linux
-source venv/bin/activate
-Windows
-venv\Scripts\activate
-📦 Install Python Dependencies
+* Hand-object interaction
+* Object manipulation
+* Action confirmation
+* Gesture/activity analysis
 
-Install all Python dependencies using:
+---
 
-pip install -r requirements.txt
+## 🎯 Object Detection
 
-The requirements file contains the dependencies required by the ORBIT-HAR Python components, including:
+YOLO is used as part of the computer-vision pipeline to identify relevant objects.
 
-OpenCV
-MediaPipe
-Ultralytics
-Requests
-FastAPI
-Uvicorn
-WebSockets
-🤖 YOLO Model
+The current prototype uses:
 
-ORBIT-HAR uses an Ultralytics YOLO model for object detection.
+* YOLO
+* OpenCV
+* MediaPipe
 
-The model file is intentionally not included in the Git repository because ML model files can be large.
+The architecture can later be extended with a custom-trained model specifically for experiment hardware.
 
-Download the required model before running the AI pipeline.
+---
 
-For the current prototype, the expected model is:
+# 🔄 Experiment Sequence Validation
 
-yolo11n.pt
+A major component of ORBIT-HAR is **sequence-aware experiment validation**.
 
-Place it where live_orbit_har.py expects it.
+Instead of simply asking:
+
+> "What action is happening?"
+
+the system asks:
+
+> "Is the astronaut performing the correct action at the correct point in the experiment?"
 
 For example:
 
+```text
+Expected:
+1. PICK_CONTAINER
+2. TILT_CONTAINER
+3. SHAKE_CONTAINER
+4. OPEN_VALVE
+5. UPRIGHT_CONTAINER
+6. PUTDOWN_CONTAINER
+```
+
+If the system detects an unexpected action:
+
+```text
+Expected Action : OPEN_VALVE
+Detected Action : SHAKE_CONTAINER
+Status          : WRONG
+```
+
+The system can report the mismatch instead of silently accepting the action.
+
+This allows ORBIT-HAR to function as an **experiment procedure validation system**, rather than only a generic activity-recognition model.
+
+---
+
+# 🧪 Example Experiment
+
+The current prototype includes a liquid-transfer-style experiment.
+
+### Liquid Sample Transfer
+
+Example sequence:
+
+```text
+PICK_CONTAINER
+       ↓
+TILT_CONTAINER
+       ↓
+SHAKE_CONTAINER
+       ↓
+OPEN_VALVE
+       ↓
+UPRIGHT_CONTAINER
+       ↓
+PUTDOWN_CONTAINER
+```
+
+Each experiment can be represented using a configuration file.
+
+Example:
+
+```text
+experiments/
+└── liquid_transfer.json
+```
+
+This makes the system extensible without requiring the complete application logic to be rewritten for every experiment.
+
+---
+
+# 🖥️ ORBIT-HAR Dashboard
+
+ORBIT-HAR includes a web-based mission monitoring dashboard.
+
+The dashboard is designed around the concept of a mission-control interface.
+
+### Dashboard components include:
+
+* Live Camera
+* Experiment Status
+* Current Step
+* Expected Action
+* Detected Action
+* AI Detection Status
+* Sequence Engine Status
+* Edge Processing Status
+* Mission Log
+* Backend/Edge Connectivity
+* Voice Assistant Status
+
+Example dashboard state:
+
+```text
+┌─────────────────────────────────────────────────────────┐
+│                    ORBIT-HAR                            │
+│              EDGE EXPERIMENT MONITOR                   │
+├───────────────────────────┬─────────────────────────────┤
+│                           │                             │
+│      LIVE CAMERA          │     EXPERIMENT STATUS       │
+│                           │                             │
+│      Astronaut Feed       │     Experiment: Liquid     │
+│                           │     Sample Transfer         │
+│                           │                             │
+│                           │     Step: 2 / 6             │
+│                           │     Expected: TILT          │
+│                           │     Detected: TILT          │
+│                           │     Status: VERIFIED        │
+│                           │                             │
+├───────────────────────────┴─────────────────────────────┤
+│                    AI DETECTION                         │
+│                                                         │
+│  Astronaut        ✓ DETECTED                            │
+│  Container        ✓ DETECTED                            │
+│  Hand Tracking    ✓ ACTIVE                              │
+│  Sequence Engine  ✓ ACTIVE                              │
+│  Edge Processing  ✓ LOCAL                               │
+│                                                         │
+├─────────────────────────────────────────────────────────┤
+│                    LIVE MISSION LOG                     │
+│                                                         │
+│  [10:31:02] Container detected                          │
+│  [10:31:04] PICK_CONTAINER verified                     │
+│  [10:31:08] TILT_CONTAINER detected                     │
+│  [10:31:09] Step verified                               │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+# ⚡ Edge Processing
+
+ORBIT-HAR is designed around **local processing**.
+
+The AI pipeline does not fundamentally depend on a cloud API to recognize experiment actions.
+
+This is important for environments where:
+
+* Internet connectivity is unavailable
+* Network latency is high
+* Bandwidth is limited
+* Data transmission is expensive
+* Continuous raw-video transmission is undesirable
+
+The intended deployment model is:
+
+```text
+             ASTRONAUT SIDE
+        ┌───────────────────────┐
+        │       Camera          │
+        │          ↓            │
+        │    ORBIT-HAR AI       │
+        │          ↓            │
+        │   Sequence Engine     │
+        │          ↓            │
+        │   Local Event Log     │
+        └───────────┬───────────┘
+                    │
+                    │ Events / Monitoring
+                    │
+                    ▼
+             MISSION CONTROL
+        ┌───────────────────────┐
+        │    ORBIT-HAR UI       │
+        │                       │
+        │ Experiment Status     │
+        │ AI Detection          │
+        │ Mission Logs          │
+        │ Camera Stream*        │
+        └───────────────────────┘
+```
+
+`*` Live video transmission is an optional monitoring layer and is separate from the core local AI processing.
+
+---
+
+# 📡 Local Camera + Mission Control Streaming
+
+ORBIT-HAR can be structured so that:
+
+### Astronaut-side system
+
+```text
+Camera
+  ↓
+AI Processing
+  ↓
+Activity Recognition
+  ↓
+Sequence Validation
+  ↓
+Event Generation
+```
+
+while a separate monitoring channel can provide:
+
+```text
+Camera
+  ↓
+Video Stream
+  ↓
+Mission-Control Laptop
+```
+
+This means video monitoring does not need to determine where the AI runs.
+
+The AI can continue running locally even when mission-control connectivity is unavailable.
+
+---
+
+# 🏗️ System Architecture
+
+```text
+                         ORBIT-HAR
+                             │
+             ┌───────────────┴────────────────┐
+             │                                │
+       ASTRONAUT SIDE                  MISSION CONTROL
+             │                                │
+             ▼                                ▼
+       Camera Input                    React Dashboard
+             │                                ▲
+             ▼                                │
+       OpenCV Pipeline                        │
+             │                                │
+      ┌──────┴───────┐                        │
+      │              │                        │
+      ▼              ▼                        │
+    YOLO         MediaPipe                    │
+      │              │                        │
+      └──────┬───────┘                        │
+             ▼                                │
+       Action Recognition                     │
+             │                                │
+             ▼                                │
+       Sequence Engine                        │
+             │                                │
+       ┌─────┴──────┐                         │
+       │            │                         │
+       ▼            ▼                         │
+    Correct       Wrong                       │
+       │            │                         │
+       └─────┬──────┘                         │
+             ▼                                │
+       Event / Log ───────► FastAPI ──────────┘
+```
+
+---
+
+# 🧩 Technology Stack
+
+## AI / Computer Vision
+
+* Python
+* OpenCV
+* YOLO / Ultralytics
+* MediaPipe
+* NumPy
+
+## Backend
+
+* Python
+* FastAPI
+* Uvicorn
+* WebSockets
+
+## Frontend
+
+* React
+* JavaScript
+* WebSocket communication
+* HTML/CSS
+
+## Configuration
+
+* JSON-based experiment definitions
+
+## Local Feedback
+
+* System voice output
+* Local event logging
+
+---
+
+# 📁 Project Structure
+
+The project is organized approximately as follows:
+
+```text
 ORBIT-HAR/
 │
-├── yolo11n.pt
-├── camera/
 ├── backend/
-└── orbit-har-dashboard/
-🌐 Dashboard Setup
+│   ├── main.py
+│   └── ...
+│
+├── dashboard/
+│   ├── src/
+│   │   ├── App.jsx
+│   │   └── ...
+│   ├── package.json
+│   └── ...
+│
+├── experiments/
+│   └── liquid_transfer.json
+│
+├── models/
+│   └── yolo11n.pt
+│
+├── logs/
+│   └── ...
+│
+├── live_orbit_har.py
+├── camera.py
+├── yolo_test.py
+├── requirements.txt
+├── README.md
+└── ...
+```
 
-Open another terminal.
+The exact contents may evolve as the project is expanded.
 
-Go to the dashboard:
+---
 
-cd orbit-har-dashboard
+# 📋 Experiment Configuration
 
-Install Node dependencies:
+Experiments are represented separately from the main recognition pipeline.
 
-npm install
+Example:
 
-Start the development server:
+```json
+{
+  "experiment_name": "Liquid Sample Transfer",
+  "steps": [
+    {
+      "action": "PICK_CONTAINER"
+    },
+    {
+      "action": "TILT_CONTAINER"
+    },
+    {
+      "action": "SHAKE_CONTAINER"
+    },
+    {
+      "action": "OPEN_VALVE"
+    },
+    {
+      "action": "UPRIGHT_CONTAINER"
+    },
+    {
+      "action": "PUTDOWN_CONTAINER"
+    }
+  ]
+}
+```
 
-npm run dev
+This allows new experiments to be added by defining their sequence instead of rebuilding the entire application.
 
-The terminal will display a local address similar to:
+---
 
-http://localhost:5173
+# 🔌 Backend API
 
-Open that address in your browser.
+The ORBIT-HAR backend is built using FastAPI.
 
-⚙️ Start the ORBIT-HAR Backend
+The backend currently provides:
 
-Open another terminal.
+### Health endpoint
 
-From the project root:
+```text
+GET /
+```
 
+Example response:
+
+```json
+{
+  "system": "ORBIT-HAR",
+  "status": "ONLINE"
+}
+```
+
+---
+
+### Event endpoint
+
+```text
+POST /event
+```
+
+Used by the AI pipeline to send experiment events to the backend.
+
+Example event:
+
+```json
+{
+  "experiment": "Liquid Sample Transfer",
+  "step": 1,
+  "total_steps": 6,
+  "expected_action": "PICK_CONTAINER",
+  "detected_action": "PICK_CONTAINER",
+  "status": "VERIFIED"
+}
+```
+
+---
+
+### WebSocket
+
+```text
+/ws
+```
+
+The WebSocket connection allows the dashboard to receive live experiment updates.
+
+Example flow:
+
+```text
+AI Pipeline
+     │
+     │ event
+     ▼
+ FastAPI
+     │
+     │ WebSocket broadcast
+     ▼
+ React Dashboard
+```
+
+---
+
+# 🔄 Real-Time Event Flow
+
+When the astronaut performs an action:
+
+```text
+Camera Frame
+     ↓
+Vision Processing
+     ↓
+Object / Hand Detection
+     ↓
+Action Recognition
+     ↓
+Sequence Validation
+     ↓
+Event Generated
+     ↓
+FastAPI Backend
+     ↓
+WebSocket
+     ↓
+Dashboard
+```
+
+The dashboard can then immediately update:
+
+```text
+Current Step
+Expected Action
+Detected Action
+Status
+Mission Log
+```
+
+---
+
+# 🗣️ Voice Feedback
+
+ORBIT-HAR can provide local voice feedback to the astronaut.
+
+Possible feedback includes:
+
+```text
+"Step verified."
+
+"Wrong action detected."
+
+"Expected open valve."
+
+"Experiment complete."
+```
+
+The voice layer is designed as an additional feedback channel and does not replace visual mission monitoring.
+
+---
+
+# 📝 Logging
+
+ORBIT-HAR maintains experiment events that can be used for:
+
+* Debugging
+* Experiment replay
+* Performance analysis
+* Error analysis
+* Mission logs
+* Demonstration purposes
+
+Example:
+
+```text
+[10:31:02] Experiment started
+[10:31:05] PICK_CONTAINER detected
+[10:31:06] Step 1 verified
+[10:31:10] TILT_CONTAINER detected
+[10:31:11] Step 2 verified
+[10:31:16] SHAKE_CONTAINER detected
+[10:31:17] Step 3 verified
+```
+
+---
+
+# ❌ Wrong Action Detection
+
+A key capability of ORBIT-HAR is detecting when the astronaut performs an action that does not match the expected experimental sequence.
+
+Example:
+
+```text
+EXPECTED:
+OPEN_VALVE
+
+DETECTED:
+SHAKE_CONTAINER
+
+RESULT:
+WRONG ACTION
+```
+
+The system can then:
+
+1. Mark the current step as incorrect
+2. Log the event
+3. Notify the dashboard
+4. Provide voice feedback
+5. Continue monitoring for the expected action
+
+This enables the system to act as an **AI-assisted procedural safety and verification layer**.
+
+---
+
+# 🧠 Why Sequence Validation Matters
+
+Generic activity recognition answers:
+
+> "What is the astronaut doing?"
+
+ORBIT-HAR additionally asks:
+
+> "Is this what the astronaut is supposed to be doing right now?"
+
+That distinction is important for structured experiments.
+
+For example:
+
+```text
+Activity Recognition:
+
+Astronaut → shaking container
+```
+
+versus:
+
+```text
+Experiment Validation:
+
+Expected → OPEN_VALVE
+Detected → SHAKE_CONTAINER
+Result   → WRONG
+```
+
+The second provides significantly more useful information for experiment monitoring.
+
+---
+
+# 🌌 Microgravity Considerations
+
+Space environments introduce unique challenges compared with conventional laboratory environments.
+
+ORBIT-HAR is designed with the following considerations in mind:
+
+* Astronaut orientation may change
+* Objects can be manipulated in non-traditional orientations
+* Traditional "up/down" assumptions may not always hold
+* Camera viewpoints can change
+* Hand-object interaction is important
+* Experiment sequence matters more than absolute scene orientation
+
+Future versions can extend the system with orientation-agnostic 3D human pose or human mesh reconstruction.
+
+---
+
+# 🔒 Privacy & Data Handling
+
+The system is designed around local processing.
+
+Instead of requiring raw video to be continuously uploaded to an external server, the edge computer can process the camera stream locally and transmit only required information such as:
+
+```text
+Detected Action
+Current Step
+Experiment Status
+Error Events
+System Health
+Timestamp
+```
+
+This can significantly reduce the amount of information that needs to leave the local processing environment.
+
+---
+
+# 📴 Offline Deployment
+
+One of the major design goals of ORBIT-HAR is the ability to operate without an active Internet connection.
+
+An offline deployment can package:
+
+```text
+ORBIT-HAR
+│
+├── Python Runtime
+├── Python Dependencies
+├── YOLO Model
+├── MediaPipe
+├── OpenCV
+├── Backend
+├── React Build
+├── Experiment Configurations
+├── Logs
+└── Startup Scripts
+```
+
+The deployed system can then run entirely on the local machine.
+
+---
+
+# 📦 Installation
+
+## 1. Clone the repository
+
+```bash
+git clone https://github.com/<YOUR-USERNAME>/<YOUR-REPOSITORY>.git
 cd ORBIT-HAR
+```
 
-Activate the Python environment:
+Replace the repository URL with the actual GitHub repository.
 
+---
+
+# 🐍 2. Create a Python virtual environment
+
+On macOS/Linux:
+
+```bash
+python3 -m venv venv
+```
+
+Activate it:
+
+```bash
 source venv/bin/activate
+```
 
-Then start FastAPI:
+On Windows:
 
-uvicorn backend.main:app --host 127.0.0.1 --port 8000
+```powershell
+python -m venv venv
+venv\Scripts\activate
+```
 
-The backend should become available at:
+---
 
-http://127.0.0.1:8000
+# 📚 3. Install Python dependencies
 
-You can check it by opening:
+```bash
+pip install -r requirements.txt
+```
 
-http://127.0.0.1:8000
+If a requirements file is not yet included:
 
-The backend should report that ORBIT-HAR is online.
+```bash
+pip install opencv-python
+pip install mediapipe
+pip install ultralytics
+pip install fastapi
+pip install uvicorn
+```
 
-🎥 Start the AI Camera System
+---
 
-Open another terminal.
+# 🤖 4. Model Setup
 
-From the project root:
+The prototype uses a YOLO model such as:
 
+```text
+models/yolo11n.pt
+```
+
+The model should be available locally for offline operation.
+
+Do not depend on automatic model downloading when deploying to a disconnected environment.
+
+Recommended deployment structure:
+
+```text
+models/
+└── yolo11n.pt
+```
+
+---
+
+# 📷 5. Camera Test
+
+Before starting the complete system, verify camera access.
+
+Run:
+
+```bash
+python camera.py
+```
+
+A successful startup should display:
+
+```text
+🚀 ORBIT-HAR camera is running
+Press Q to quit
+```
+
+If the camera does not open:
+
+* Check OS camera permissions
+* Check whether another application is using the camera
+* Verify the camera index
+* Test the camera independently
+
+---
+
+# 🖥️ Running the Complete System
+
+ORBIT-HAR consists of multiple components.
+
+The typical development setup uses:
+
+```text
+Terminal 1 → Backend
+Terminal 2 → Dashboard
+Terminal 3 → AI / Camera Pipeline
+```
+
+---
+
+# 1️⃣ Start the Backend
+
+Open Terminal 1:
+
+```bash
+cd ORBIT-HAR
 source venv/bin/activate
+```
 
 Then:
 
-python camera/live_orbit_har.py
+```bash
+uvicorn backend.main:app --host 0.0.0.0 --port 8000
+```
 
-The ORBIT-HAR AI pipeline will:
+The backend should be available locally at:
 
-Open the camera
-Capture live frames
-Run YOLO object detection
-Track hands using MediaPipe
-Detect hand-container interaction
-Analyze movement
-Determine the current experiment action
-Verify the action against the expected experiment step
-Send experiment events to the backend
-Send the live camera feed to the dashboard
-Update the monitoring dashboard in real time
-🖥️ Running the Complete System
+```text
+http://127.0.0.1:8000
+```
 
-ORBIT-HAR currently uses three processes.
+Health check:
 
-You should have three terminals open.
+```bash
+curl http://127.0.0.1:8000/
+```
 
-Terminal 1 — Backend
-cd ORBIT-HAR
-source venv/bin/activate
+Expected response:
 
-uvicorn backend.main:app --host 127.0.0.1 --port 8000
-Terminal 2 — Dashboard
-cd ORBIT-HAR/orbit-har-dashboard
+```json
+{
+  "system": "ORBIT-HAR",
+  "status": "ONLINE"
+}
+```
 
+---
+
+# 2️⃣ Start the Dashboard
+
+Open Terminal 2:
+
+```bash
+cd ORBIT-HAR/dashboard
 npm install
 npm run dev
-Terminal 3 — AI / Camera
+```
+
+The terminal will display the local dashboard URL.
+
+Open that address in your browser.
+
+The dashboard communicates with the backend through WebSockets.
+
+---
+
+# 3️⃣ Start the AI Pipeline
+
+Open Terminal 3:
+
+```bash
 cd ORBIT-HAR
 source venv/bin/activate
+```
 
-python camera/live_orbit_har.py
+Run:
 
-Then open the dashboard URL shown by Vite.
+```bash
+python live_orbit_har.py
+```
+
+The application will:
+
+```text
+Open Camera
+     ↓
+Process Frames
+     ↓
+Detect Objects
+     ↓
+Track Hands
+     ↓
+Recognize Activity
+     ↓
+Validate Sequence
+     ↓
+Generate Event
+     ↓
+Send Event to Backend
+```
+
+---
+
+# 🔧 Configuration
+
+The recognition pipeline contains configurable parameters for controlling detection and confirmation behavior.
+
+Typical parameters include:
+
+```text
+AI_STATUS_INTERVAL
+FRAME_INTERVAL
+ACTION_COOLDOWN
+YOLO_EVERY_N_FRAMES
+YOLO_IMAGE_SIZE
+YOLO_CONFIDENCE
+BOTTLE_HOLD_FRAMES
+```
+
+Action confirmation thresholds can also be configured.
+
+These parameters help balance:
+
+* Detection speed
+* Stability
+* False positives
+* CPU/GPU usage
+* Responsiveness
+
+---
+
+# ⚙️ Performance Strategy
+
+The prototype uses several optimizations to reduce unnecessary computation.
+
+For example:
+
+```text
+Camera
+  ↓
+Every frame
+  ↓
+Lightweight processing
+  ↓
+YOLO every N frames
+  ↓
+Action confirmation
+  ↓
+Event only after stable detection
+```
+
+This prevents every single frame from immediately changing the experiment state.
+
+Temporal confirmation is especially useful because computer-vision predictions can fluctuate between frames.
+
+---
+
+# 🧪 Adding a New Experiment
+
+To add another experiment:
+
+### 1. Create a new JSON configuration
+
+```text
+experiments/
+└── new_experiment.json
+```
+
+### 2. Define the experiment sequence
+
+For example:
+
+```json
+{
+  "experiment_name": "Example Experiment",
+  "steps": [
+    {
+      "action": "PICK_OBJECT"
+    },
+    {
+      "action": "OPEN_CONTAINER"
+    },
+    {
+      "action": "TRANSFER_SAMPLE"
+    },
+    {
+      "action": "CLOSE_CONTAINER"
+    }
+  ]
+}
+```
+
+### 3. Add/extend the corresponding recognition logic
+
+The computer-vision pipeline must be capable of identifying the actions used by the new experiment.
+
+---
+
+# 🧑‍🚀 Dataset Generation
+
+A future/custom-model version of ORBIT-HAR can use experiment-specific datasets containing:
+
+### Object Detection
+
+Examples:
+
+* Containers
+* Valves
+* Tools
+* Samples
+* Experimental hardware
+
+### Pose Estimation
+
+Human body landmarks can be used to understand:
+
+* Arm position
+* Hand position
+* Body orientation
+* Interaction with equipment
+
+### Hand-Object Interaction
+
+Interaction labels can capture:
+
+```text
+Hand → Container
+Hand → Valve
+Hand → Tool
+Hand → Sample
+```
+
+This can improve activity recognition beyond simple object detection.
+
+---
+
+# 🧠 Future AI Pipeline
+
+A more advanced version can use:
+
+```text
+Object Detection
+       +
+Human Pose
+       +
+Hand Tracking
+       +
+Object Tracking
+       +
+Temporal Modeling
+       ↓
+Activity Recognition
+       ↓
+Experiment State Machine
+```
+
+A temporal model could learn patterns across multiple frames rather than classifying actions independently.
+
+Potential future approaches include:
+
+* LSTM
+* GRU
+* Temporal Transformer
+* Temporal CNN
+* Video Transformer
+* 3D pose-based recognition
+
+---
+
+# 🛰️ Future Mission Architecture
+
+The long-term architecture can support:
+
+```text
+                 SPACECRAFT
+                     │
+          ┌──────────┴──────────┐
+          │                     │
+     Astronaut AI          Mission Control
+          │                     │
+       Camera                Dashboard
+          │                     │
+          ▼                     │
+    ORBIT-HAR Edge              │
+          │                     │
+    ┌─────┴─────┐               │
+    │           │               │
+   AI       Experiment          │
+Processing   Engine             │
+    │           │               │
+    └─────┬─────┘               │
+          │                     │
+       Events ──────────────────┘
+```
+
+The system can therefore separate:
+
+### Critical processing
+
+Runs locally:
+
+* Camera processing
+* AI inference
+* Activity recognition
+* Sequence validation
+* Error detection
+
+### Monitoring
+
+Can be transmitted:
+
+* Experiment state
+* Step number
+* Detected activity
+* Errors
+* Logs
+* System health
+* Optional video stream
+
+---
+
+# 🚀 Offline Deployment Architecture
+
+For a fully disconnected deployment:
+
+```text
+┌───────────────────────────────────────┐
+│         ORBIT-HAR EDGE COMPUTER      │
+│                                       │
+│  Python Runtime                       │
+│  OpenCV                               │
+│  MediaPipe                            │
+│  YOLO Model                           │
+│  FastAPI                              │
+│  Experiment Config                    │
+│  React Dashboard                      │
+│  Local Logs                           │
+│                                       │
+│            ↓                          │
+│          CAMERA                       │
+└───────────────────────────────────────┘
+```
+
+No external API is required for the core recognition pipeline.
+
+This makes ORBIT-HAR suitable for environments where Internet access cannot be assumed.
+
+---
+
+# 🔐 Security Considerations
+
+For a production deployment, additional security mechanisms should be added.
+
+Recommended future improvements include:
+
+* Authentication
+* Role-based access
+* Encrypted communication
+* Signed model files
+* Secure WebSocket connections
+* Audit logs
+* Configuration integrity checks
+* Device authentication
+* Secure software updates
+
+The current prototype focuses primarily on demonstrating the AI and experiment-monitoring architecture.
+
+---
+
+# 📊 Current Prototype Status
+
+| Component                        | Status                     |
+| -------------------------------- | -------------------------- |
+| Camera input                     | ✅ Implemented              |
+| OpenCV pipeline                  | ✅ Implemented              |
+| Hand tracking                    | ✅ Implemented              |
+| YOLO integration                 | ✅ Implemented              |
+| Activity recognition             | ✅ Implemented              |
+| Experiment sequence              | ✅ Implemented              |
+| Wrong-action detection           | ✅ Implemented              |
+| Experiment configuration         | ✅ Implemented              |
+| Voice feedback                   | ✅ Implemented              |
+| Local event logging              | ✅ Implemented              |
+| FastAPI backend                  | ✅ Implemented              |
+| WebSocket communication          | ✅ Implemented              |
+| React dashboard                  | ✅ Implemented              |
+| Edge/local processing            | ✅ Implemented              |
+| Offline architecture             | 🟡 Deployment-ready design |
+| Custom experiment datasets       | 🔄 Extensible              |
+| Custom-trained experiment model  | 🔄 Future enhancement      |
+| Advanced 3D orientation handling | 🔄 Future enhancement      |
+| Production-grade security        | 🔄 Future enhancement      |
+
+---
+
+# 🛠️ Troubleshooting
+
+## Camera does not open
+
+Check camera permissions in the operating system.
+
+On macOS:
+
+```text
+System Settings
+→ Privacy & Security
+→ Camera
+```
+
+Make sure the terminal/application running Python has permission.
+
+---
+
+## Backend shows "Address already in use"
+
+Check which process is using port `8000`.
+
+On macOS/Linux:
+
+```bash
+lsof -i :8000
+```
+
+Terminate the process if necessary:
+
+```bash
+kill <PID>
+```
+
+Then restart:
+
+```bash
+uvicorn backend.main:app --host 0.0.0.0 --port 8000
+```
+
+---
+
+## Dashboard says Backend Offline
+
+First verify:
+
+```bash
+curl http://127.0.0.1:8000/
+```
+
+If the backend is running, check that the dashboard WebSocket is configured for:
+
+```text
+ws://127.0.0.1:8000/ws
+```
+
+---
+
+## YOLO model cannot be found
+
+Verify that the model exists locally:
+
+```text
+models/
+└── yolo11n.pt
+```
+
+If deploying offline, ensure the model is copied with the application.
+
+---
+
+## Detection is unstable
+
+Possible improvements:
+
+* Increase confidence threshold
+* Increase temporal confirmation frames
+* Adjust frame sampling
+* Improve camera positioning
+* Improve lighting
+* Add object tracking
+* Train an experiment-specific model
+
+---
+
+# 🧪 Testing
+
+Before a demonstration, test the system in this order:
+
+### Test 1 — Camera
+
+```bash
+python camera.py
+```
+
+### Test 2 — Backend
+
+```bash
+uvicorn backend.main:app --host 0.0.0.0 --port 8000
+```
+
+### Test 3 — Backend health
+
+```bash
+curl http://127.0.0.1:8000/
+```
+
+### Test 4 — Dashboard
+
+```bash
+cd dashboard
+npm run dev
+```
+
+### Test 5 — AI pipeline
+
+```bash
+python live_orbit_har.py
+```
+
+### Test 6 — Complete experiment
+
+Perform the experiment in the correct sequence.
+
+### Test 7 — Wrong-action detection
+
+Intentionally perform an incorrect action and verify:
+
+```text
+Detected Action ≠ Expected Action
+             ↓
+          WRONG
+             ↓
+        Dashboard
+             +
+          Log
+             +
+      Voice Feedback
+```
+
+---
+
+# 🎬 Demonstration Flow
+
+A recommended ORBIT-HAR demonstration is:
+
+```text
+1. Start the edge computer
+
+2. Start ORBIT-HAR
+
+3. Camera becomes active
+
+4. Dashboard shows:
+   EDGE SYSTEM ONLINE
+
+5. Start Liquid Sample Transfer
+
+6. Astronaut picks up container
+
+7. ORBIT-HAR detects:
+   PICK_CONTAINER
+
+8. Dashboard updates:
+   Step 1 VERIFIED
+
+9. Astronaut tilts container
+
+10. ORBIT-HAR detects:
+    TILT_CONTAINER
+
+11. Dashboard updates:
+    Step 2 VERIFIED
+
+12. Perform an incorrect action
+
+13. ORBIT-HAR detects mismatch
+
+14. Dashboard shows:
+    WRONG ACTION
+
+15. Voice feedback is generated
+
+16. Continue with the correct action
+
+17. Experiment proceeds
+
+18. Final step completes
+
+19. Experiment status:
+    COMPLETE
+```
+
+This demonstrates that ORBIT-HAR is not simply detecting objects — it is **understanding and validating an experiment workflow**.
+
+---
+
+# 🌍 Applications
+
+Although initially designed for on-board space experiments, the architecture can be adapted to other environments.
+
+Potential applications include:
+
+* Space missions
+* Laboratory automation
+* Remote experiments
+* Industrial procedure monitoring
+* Manufacturing
+* Medical procedure assistance
+* Hazardous environments
+* Remote maintenance
+* Training systems
+* Autonomous robotic operations
+
+---
+
+# 🔭 Future Roadmap
+
+## Phase 1 — Prototype
+
+* [x] Camera pipeline
+* [x] YOLO integration
+* [x] Hand tracking
+* [x] Activity recognition
+* [x] Sequence validation
+* [x] Wrong-action detection
+* [x] Backend
+* [x] Dashboard
+* [x] Logging
+* [x] Voice feedback
+
+## Phase 2 — Robust AI
+
+* [ ] Custom experiment dataset
+* [ ] Custom YOLO training
+* [ ] Improved object tracking
+* [ ] Temporal activity recognition
+* [ ] Better hand-object interaction
+* [ ] Robust orientation handling
+
+## Phase 3 — Edge Deployment
+
+* [ ] Complete offline packaging
+* [ ] Automated installation
+* [ ] One-command startup
+* [ ] Hardware optimization
+* [ ] GPU/accelerator support
+* [ ] Resource monitoring
+
+## Phase 4 — Mission Control
+
+* [ ] Remote mission-control client
+* [ ] Live camera stream
+* [ ] Remote experiment monitoring
+* [ ] Event synchronization
+* [ ] Network interruption recovery
+* [ ] Secure communication
+
+## Phase 5 — Advanced Space AI
+
+* [ ] Orientation-agnostic 3D human pose
+* [ ] Human mesh reconstruction
+* [ ] Multi-camera support
+* [ ] Autonomous experiment recovery
+* [ ] Long-duration autonomous monitoring
+* [ ] Multi-experiment management
+
+---
+
+# 🏆 What Makes ORBIT-HAR Different?
+
+Traditional computer vision systems may answer:
+
+```text
+"What objects are visible?"
+```
+
+Activity recognition systems may answer:
+
+```text
+"What is the astronaut doing?"
+```
+
+ORBIT-HAR goes one step further:
+
+```text
+"What is the astronaut doing,
+and is that action correct for the
+current stage of the experiment?"
+```
+
+This enables ORBIT-HAR to function as an **AI experiment-monitoring and procedural-validation system** rather than simply an object detector.
+
+---
+
+# 💡 Design Philosophy
+
+ORBIT-HAR follows three main principles:
+
+### 1. Edge First
+
+AI processing should happen as close to the experiment as possible.
+
+### 2. Sequence Aware
+
+Actions should be interpreted in the context of the experiment.
+
+### 3. Human Assistive
+
+The system should assist the astronaut and mission-control team rather than replace human oversight.
+
+---
+
+# 👨‍💻 Development
+
+Clone the repository:
+
+```bash
+git clone https://github.com/<YOUR-USERNAME>/<YOUR-REPOSITORY>.git
+cd ORBIT-HAR
+```
+
+Create the environment:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Start the backend:
+
+```bash
+uvicorn backend.main:app --host 0.0.0.0 --port 8000
+```
+
+Start the dashboard:
+
+```bash
+cd dashboard
+npm install
+npm run dev
+```
+
+Start the AI pipeline:
+
+```bash
+python live_orbit_har.py
+```
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome.
+
+A typical contribution workflow:
+
+```bash
+git checkout -b feature/new-feature
+```
+
+Make your changes, test them, then:
+
+```bash
+git add .
+git commit -m "Add new feature"
+git push origin feature/new-feature
+```
+
+Open a Pull Request on GitHub.
+
+---
+
+# 📜 License
+
+Add the project's chosen license here.
+
+For example:
+
+```text
+MIT License
+```
+
+If this project is being submitted under a competition or institutional program, ensure that the selected license is compatible with the applicable rules before publishing.
+
+---
+
+# 👩‍🚀 Project
+
+## ORBIT-HAR
+
+**AI Human Activity Recognition for On-Board BAS Experiments**
+
+Designed as an edge-AI experiment monitoring system for structured experiments in space environments.
+
+```text
+             🚀 ORBIT-HAR
+
+     Observe → Understand → Validate
+
+          CAMERA
+             ↓
+       COMPUTER VISION
+             ↓
+      ACTIVITY RECOGNITION
+             ↓
+       SEQUENCE ENGINE
+             ↓
+     EXPERIMENT VALIDATION
+             ↓
+       MISSION MONITOR
+```
+
+---
+
+## ⭐ If you find this project interesting
+
+Consider starring the repository and following its development as ORBIT-HAR evolves from a prototype into a complete edge-AI experiment monitoring platform.
+
+
