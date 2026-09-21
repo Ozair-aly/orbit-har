@@ -870,7 +870,7 @@ Before starting the complete system, verify camera access.
 Run:
 
 ```bash
-python camera.py
+python live_orbit_har.py
 ```
 
 A successful startup should display:
@@ -915,7 +915,8 @@ source venv/bin/activate
 Then:
 
 ```bash
-uvicorn backend.main:app --host 0.0.0.0 --port 8000
+cd backend
+python3 -m uvicorn main:app
 ```
 
 The backend should be available locally at:
@@ -946,7 +947,7 @@ Expected response:
 Open Terminal 2:
 
 ```bash
-cd ORBIT-HAR/dashboard
+cd ORBIT-HAR/orbit-har-dashboard
 npm install
 npm run dev
 ```
@@ -960,7 +961,7 @@ The dashboard communicates with the backend through WebSockets.
 ---
 
 # 3️⃣ Start the AI Pipeline
-
+Not really necessary (already embedded)
 Open Terminal 3:
 
 ```bash
@@ -971,7 +972,7 @@ source venv/bin/activate
 Run:
 
 ```bash
-python live_orbit_har.py
+python3 live_orbit_har.py
 ```
 
 The application will:
