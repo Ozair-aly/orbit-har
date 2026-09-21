@@ -5,3 +5,4 @@ requests
 fastapi
 uvicorn
 websockets
+numpy==1.26.4
