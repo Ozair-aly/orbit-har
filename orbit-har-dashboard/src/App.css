@@ -1,0 +1,2841 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #080b10;
+  color: #ffffff;
+}
+
+/* =========================
+   APP SHELL (sidebar + content)
+========================= */
+
+.app-shell {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  padding: 24px;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+  width: 230px;
+  flex-shrink: 0;
+  background: #0c0f14;
+  border-right: 1px solid #1c232c;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-logo {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 26px;
+  padding: 0 10px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  color: #8c96a5;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid transparent;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.sidebar-link:hover {
+  background: #161c24;
+  color: #ffffff;
+}
+
+.sidebar-link.active {
+  background: #1a2230;
+  color: #ffffff;
+  border-color: #2b3a52;
+}
+
+.sidebar-icon {
+  font-size: 16px;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  margin: 0;
+  text-align: left;
+  font-size: 30px;
+  color: rgb(255, 254, 253);
+}
+
+.header p {
+  margin: 6px 0 0;
+  color: #8c96a5;
+}
+
+.online {
+  padding: 10px 16px;
+  border: 1px solid #2b8a57;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.offline {
+  padding: 10px 16px;
+  border: 1px solid #8a2b2b;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+
+/* =========================
+   MAIN GRID (Monitoring page)
+========================= */
+
+.dashboard {
+  
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  align-items:start;
+  gap: 18px;
+}
+
+.page {
+  display: grid;
+  gap: 18px;
+}
+
+
+/* =========================
+   PANELS
+========================= */
+
+.panel {
+  background: #11161d;
+  border: 1px solid #252d38;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.panel-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: bold;
+  color: #9ca7b5;
+  margin-bottom: 18px;
+}
+
+
+
+
+/* =========================
+   RECORDING CONTROLS
+========================= */
+
+.recording-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.rec-btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid #252d38;
+  background: #151a21;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: border-color 0.15s, opacity 0.15s;
+}
+
+.rec-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.rec-btn.start:hover:not(:disabled) {
+  border-color: #2b8a57;
+}
+
+.rec-btn.pause:hover:not(:disabled) {
+  border-color: #a3823b;
+}
+
+.rec-btn.stop:hover:not(:disabled) {
+  border-color: #a33b3b;
+}
+
+.rec-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 4px;
+}
+
+.rec-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff5555;
+  display: inline-block;
+}
+
+.rec-dot.pulsing {
+  animation: rec-pulse 1s infinite;
+}
+
+@keyframes rec-pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.25; }
+  100% { opacity: 1; }
+}
+
+.rec-timer {
+  font-family: monospace;
+  font-size: 13px;
+  color: #9ca7b5;
+}
+
+.rec-error {
+  font-size: 12px;
+  color: #ff6b6b;
+}
+
+
+/* =========================
+   EXPERIMENT STATUS
+========================= */
+
+.status h2 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+.step-number {
+  font-size: 42px;
+  font-weight: bold;
+  margin-top: 30px;
+}
+
+.step-number span {
+  font-size: 20px;
+  color: #6e7886;
+}
+
+.progress {
+  width: 100%;
+  height: 14px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 18px 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #1f2d3d;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+.expected,
+.detected {
+  margin-top: 22px;
+}
+
+.expected small,
+.detected small {
+  display: block;
+  color: #8c96a5;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.expected strong,
+.detected strong {
+  font-size: 16px;
+}
+
+
+/* =========================
+   STATUS BOXES
+========================= */
+
+.success-box {
+  margin-top: 25px;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #2b8a57;
+  background: #10251a;
+  color: #5ee69a;
+  text-align: center;
+  font-weight: bold;
+}
+
+.error-box {
+  margin-top: 25px;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #a33b3b;
+  background: #2a1111;
+  color: #ff6b6b;
+  line-height: 1.6;
+}
+
+.waiting-box {
+  margin-top: 25px;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #38414e;
+  background: #151a21;
+  color: #9ca7b5;
+  text-align: center;
+}
+
+
+/* =========================
+   AI DETECTION
+========================= */
+
+.detection-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #252d38;
+}
+
+.detection-item b {
+  font-size: 12px;
+}
+
+.detected-state {
+  color: #00ff9d;
+}
+
+.active-state {
+  color: #00d9ff;
+}
+
+.inactive-state {
+  color: #ff5c5c;
+}
+
+.detected-wrong {
+  color: #ff6b6b;
+}
+
+
+/* =========================
+   MISSION LOG (Monitoring page, live feed)
+========================= */
+
+.log {
+  display: grid;
+  grid-template-columns: 80px 1fr 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid #252d38;
+  font-size: 13px;
+}
+
+.log span:first-child {
+  color: #707b89;
+}
+
+.log b {
+  text-align: right;
+}
+
+.mission {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.mission::-webkit-scrollbar {
+  width: 6px;
+}
+
+.mission::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+}
+
+.mission::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.empty {
+  color: #707b89;
+  text-align: center;
+  padding: 30px 0;
+}
+
+
+/* =========================
+   REFRESH BUTTON (Logs / Videos pages)
+========================= */
+
+.refresh-btn {
+  background: #151a21;
+  border: 1px solid #252d38;
+  color: #9ca7b5;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.refresh-btn:hover {
+  border-color: #38414e;
+  color: #ffffff;
+}
+
+
+/* =========================
+   LOGS PAGE
+========================= */
+
+.logs-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.filter-chip {
+  background: #151a21;
+  border: 1px solid #252d38;
+  color: #9ca7b5;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.filter-chip.active {
+  background: #1a2230;
+  border-color: #2b3a52;
+  color: #ffffff;
+}
+
+.logs-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.logs-row {
+  display: grid;
+  grid-template-columns: 100px 1.2fr 70px 1.6fr 130px;
+  align-items: center;
+  padding: 12px 6px;
+  border-bottom: 1px solid #252d38;
+  font-size: 13px;
+  gap: 8px;
+}
+
+.logs-header {
+  color: #707b89;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #38414e;
+}
+
+
+/* =========================
+   VIDEOS PAGE
+========================= */
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.video-card {
+  background: #151a21;
+  border: 1px solid #252d38;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.video-thumb {
+  height: 130px;
+  background: #05070a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.video-play-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid #38414e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.video-thumb:hover .video-play-icon {
+  border-color: #ffffff;
+}
+
+.video-meta {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: #9ca7b5;
+}
+
+.video-meta strong {
+  color: #ffffff;
+  font-size: 13px;
+}
+
+.video-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.video-modal {
+  background: #11161d;
+  border: 1px solid #252d38;
+  border-radius: 10px;
+  width: min(800px, 90vw);
+  overflow: hidden;
+}
+
+.video-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid #252d38;
+  font-size: 13px;
+}
+
+.video-modal-close {
+  background: none;
+  border: none;
+  color: #9ca7b5;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.video-player {
+  width: 100%;
+  max-height: 70vh;
+  display: block;
+  background: #000000;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+  margin-top: 18px;
+  padding: 16px;
+  background: #11161d;
+  border: 1px solid #252d38;
+  border-radius: 10px;
+
+  display: flex;
+  justify-content: space-between;
+
+  color: #8c96a5;
+  font-size: 12px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 900px) {
+
+  .app-shell {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    border-right: none;
+    border-bottom: 1px solid #1c232c;
+    padding: 14px 16px;
+  }
+
+  .sidebar-logo {
+    display: none;
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+  }
+
+  
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    
+  }
+
+  .logs-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+}
+/* =========================================================
+   EXPERIMENTS PAGE
+   ========================================================= */
+
+.experiments-page {
+  padding: 4px 0 40px;
+}
+
+.page-title {
+  margin-bottom: 24px;
+}
+
+.page-title h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.page-title p {
+  margin-top: 6px;
+  color: #8d98a8;
+  font-size: 14px;
+}
+
+.experiment-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  padding: 22px;
+
+  margin-bottom: 16px;
+
+  background: #11161d;
+  border: 1px solid #27303c;
+  border-radius: 10px;
+}
+
+.experiment-icon {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #19212c;
+  border-radius: 10px;
+
+  font-size: 25px;
+}
+
+.experiment-info {
+  flex: 1;
+}
+
+.experiment-info h3 {
+  margin: 0 0 7px;
+
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.experiment-info p {
+  margin: 0 0 10px;
+
+  color: #8d98a8;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.experiment-steps {
+  color: #9faaba;
+  font-size: 12px;
+}
+
+.experiment-start {
+  padding: 10px 18px;
+
+  border: 1px solid #344052;
+  border-radius: 6px;
+
+  background: #18202b;
+  color: #e5e9ef;
+
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.experiment-start:hover {
+  background: #222d3b;
+}
+/* =========================================================
+   ORBIT-HAR EXPERIMENTS PAGE
+   ========================================================= */
+
+.experiments-page {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 10px 0 40px;
+}
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.experiments-page .page-title {
+  margin-bottom: 28px;
+}
+
+.experiments-page .page-title h2 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.experiments-page .page-title p {
+  margin: 0;
+  color: #8792a2;
+  font-size: 14px;
+}
+
+
+
+/* =========================================================
+   EXPERIMENT LIST CARD
+   ========================================================= */
+
+.experiment-card {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 22px 24px;
+  margin-bottom: 16px;
+
+  background: #11161d;
+  border: 1px solid #27313d;
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.experiment-card:hover {
+  background: #151c25;
+  border-color: #3b4655;
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   EXPERIMENT ICON
+   ========================================================= */
+
+.experiment-icon {
+  width: 52px;
+  height: 52px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #19212b;
+  border: 1px solid #303b48;
+  border-radius: 10px;
+
+  font-size: 25px;
+}
+
+/* =========================================================
+   EXPERIMENT INFORMATION
+   ========================================================= */
+
+.experiment-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.experiment-info h3 {
+  margin: 0 0 7px;
+
+  color: #f1f5f9;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.experiment-info p {
+  margin: 0 0 12px;
+
+  color: #8d98a8;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.experiment-steps {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 5px 10px;
+
+  background: #1a222c;
+  border: 1px solid #303a47;
+  border-radius: 5px;
+
+  color: #aab4c1;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   VIEW BUTTON
+   ========================================================= */
+
+.experiment-start {
+  flex-shrink: 0;
+
+  padding: 10px 16px;
+
+  background: #18212b;
+  border: 1px solid #364252;
+  border-radius: 6px;
+
+  color: #d7dee7;
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.experiment-start:hover {
+  background: #222d3a;
+  border-color: #4b5869;
+}
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.experiment-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-bottom: 24px;
+  padding: 8px 13px;
+
+  background: transparent;
+  border: 1px solid #303a47;
+  border-radius: 6px;
+
+  color: #9ca8b7;
+  font-size: 12px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.experiment-back:hover {
+  background: #151c24;
+  color: #e2e8f0;
+  border-color: #465364;
+}
+
+/* =========================================================
+   EXPERIMENT DETAILS CARD
+   ========================================================= */
+
+.experiment-details-card {
+  width: 100%;
+  box-sizing: border-box;
+
+  background: #11161d;
+  border: 1px solid #27313d;
+  border-radius: 10px;
+
+  overflow: hidden;
+}
+
+/* =========================================================
+   DETAILS HEADER
+   ========================================================= */
+
+.experiment-details-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 22px 26px;
+
+  border-bottom: 1px solid #252e38;
+}
+
+.experiment-details-header h3 {
+  margin: 0 0 5px;
+
+  color: #edf2f7;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.experiment-details-header p {
+  margin: 0;
+
+  color: #7f8b9a;
+  font-size: 12px;
+}
+
+.experiment-status {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 6px 11px;
+
+  background: #17251d;
+  border: 1px solid #294532;
+  border-radius: 5px;
+
+  color: #83c895;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* =========================================================
+   STEP LIST
+   ========================================================= */
+
+.experiment-step-list {
+  padding: 8px 26px;
+}
+
+/* =========================================================
+   INDIVIDUAL STEP
+   ========================================================= */
+
+.experiment-step {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding: 19px 0;
+
+  border-bottom: 1px solid #222b34;
+}
+
+.experiment-step:last-child {
+  border-bottom: none;
+}
+
+/* =========================================================
+   STEP NUMBER
+   ========================================================= */
+
+.experiment-step-number {
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #1a222c;
+  border: 1px solid #354150;
+  border-radius: 50%;
+
+  color: #d9e1ea;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   STEP TEXT
+   ========================================================= */
+
+.experiment-step-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  flex: 1;
+}
+
+.experiment-step-info strong {
+  color: #8995a4;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.experiment-step-info span {
+  color: #e4e9ef;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.experiment-step-info small {
+  color: #687585;
+  font-size: 11px;
+}
+
+/* =========================================================
+   ACTION AREA
+   ========================================================= */
+
+.experiment-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  padding: 20px 26px;
+
+  background: #0f141a;
+  border-top: 1px solid #252e38;
+}
+
+/* =========================================================
+   START EXPERIMENT BUTTON
+   ========================================================= */
+
+.experiment-start-large {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 190px;
+
+  padding: 12px 20px;
+
+  background: #1c2733;
+  border: 1px solid #425264;
+  border-radius: 6px;
+
+  color: #edf2f7;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.experiment-start-large:hover {
+  background: #263442;
+  border-color: #5b6b7d;
+  transform: translateY(-1px);
+}
+
+.experiment-start-large:active {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+  .experiments-page {
+    padding: 5px 0 30px;
+  }
+
+  .experiment-card {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .experiment-info {
+    width: calc(100% - 75px);
+  }
+
+  .experiment-start {
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  .experiment-details-header {
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .experiment-actions {
+    justify-content: stretch;
+  }
+
+  .experiment-start-large {
+    width: 100%;
+  }
+}
+/* =========================================================
+   THEME SYSTEM
+   ========================================================= */
+
+.app-shell {
+  min-height: 100vh;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+.app-shell.dark-mode {
+  background: #0b0f14;
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   LIGHT MODE
+   ========================================================= */
+
+.app-shell.light-mode {
+  background: #f4f6f8;
+  color: #111827;
+}
+
+
+/* =========================================================
+   HEADER RIGHT
+   ========================================================= */
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+
+/* =========================================================
+   THEME BUTTON
+   ========================================================= */
+
+.theme-toggle {
+  border: 1px solid rgba(128, 128, 128, 0.35);
+
+  border-radius: 10px;
+
+  padding: 9px 14px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+
+/* DARK */
+
+.dark-mode .theme-toggle {
+  background: #151b23;
+  color: #ffffff;
+}
+
+
+/* LIGHT */
+
+.light-mode .theme-toggle {
+  background: #ffffff;
+  color: #111827;
+}
+
+
+/* HOVER */
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   LIGHT MODE PANELS
+   ========================================================= */
+
+.light-mode .panel,
+.light-mode .experiment-card,
+.light-mode .experiment-details-card {
+  background: #ffffff;
+  color: #111827;
+
+  border-color: #d9dee5;
+
+  box-shadow:
+    0 4px 18px rgba(0, 0, 0, 0.06);
+}
+
+
+
+/* =========================================================
+   LIGHT MODE FOOTER
+   ========================================================= */
+
+.light-mode footer {
+  background: #ffffff;
+  color: #374151;
+
+  border-top: 1px solid #d9dee5;
+}
+
+
+/* =========================================================
+   DARK MODE FOOTER
+   ========================================================= */
+
+.dark-mode footer {
+  background: #0b0f14;
+  color: #d1d5db;
+}
+/* =========================================================
+   SIDEBAR THEME
+   ========================================================= */
+
+/* -------------------------
+   DARK MODE
+   ------------------------- */
+
+.dark-mode .sidebar {
+  background: #0d1218;
+  color: #ffffff;
+  border-right: 1px solid #242b34;
+}
+
+
+/* -------------------------
+   LIGHT MODE
+   ------------------------- */
+
+.light-mode .sidebar {
+  background: #ffffff;
+  color: #111827;
+  border-right: 1px solid #d9dee5;
+}
+
+
+/* =========================================================
+   SIDEBAR LOGO
+   ========================================================= */
+
+.dark-mode .sidebar-logo {
+  color: #ffffff;
+}
+
+.light-mode .sidebar-logo {
+  color: #111827;
+}
+
+
+/* =========================================================
+   SIDEBAR LINKS
+   ========================================================= */
+
+.dark-mode .sidebar-link {
+  color: #cbd5e1;
+}
+
+.light-mode .sidebar-link {
+  color: #334155;
+}
+
+
+/* =========================================================
+   SIDEBAR HOVER
+   ========================================================= */
+
+.dark-mode .sidebar-link:hover {
+  background: #171e27;
+  color: #ffffff;
+}
+
+.light-mode .sidebar-link:hover {
+  background: #eef2f7;
+  color: #111827;
+}
+
+
+/* =========================================================
+   ACTIVE LINK
+   ========================================================= */
+
+.dark-mode .sidebar-link.active {
+  background: #1c2530;
+  color: #ffffff;
+}
+
+.light-mode .sidebar-link.active {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+
+/* =========================================================
+   SIDEBAR ICON
+   ========================================================= */
+
+.dark-mode .sidebar-icon {
+  opacity: 1;
+}
+
+.light-mode .sidebar-icon {
+  opacity: 1;
+}
+/* =========================================================
+   ORBIT-HAR — LIGHT MODE
+   Soft Cool-Grey + Warm Off-White
+   ========================================================= */
+
+
+.light-mode {
+  background: #F1F3F5;
+  color: #17212B;
+}
+
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+
+.light-mode .main-content {
+  background: #F1F3F5;
+  color: #17212B;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.light-mode .header {
+  background: #FAFAF7;
+  color: #17212B;
+  border-bottom: 1px solid #CBD2D9;
+}
+
+.light-mode .header h1 {
+  color: #17212B;
+}
+
+.light-mode .header p {
+  color: #64748B;
+}
+
+
+/* =========================================================
+   HEADER RIGHT
+   ========================================================= */
+
+.light-mode .header-right {
+  color: #17212B;
+}
+
+
+/* =========================================================
+   BACKEND STATUS
+   ========================================================= */
+
+.light-mode .online,
+.light-mode .offline {
+  color: #17212B;
+  background: #FAFAF7;
+  border-color: #CBD2D9;
+}
+
+
+/* =========================================================
+   ORBIT-HAR — LIVELY LIGHT MODE
+   Professional Mission-Control Palette
+   ========================================================= */
+
+.light-mode {
+  background: #EEF4F8;
+  color: #172B3A;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+
+.light-mode .main-content {
+  background: #EEF4F8;
+  color: #172B3A;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.light-mode .header {
+  background: #F8FBFD;
+  color: #172B3A;
+  border-bottom: 1px solid #C5D5E0;
+}
+
+.light-mode .header h1 {
+  color: #172B3A;
+}
+
+.light-mode .header p {
+  color: #52697A;
+}
+
+
+/* =========================================================
+   HEADER CONTROLS
+   ========================================================= */
+
+.light-mode .online {
+  color: #087F5B;
+}
+
+.light-mode .offline {
+  color: #C2410C;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.light-mode .sidebar {
+  background: #E3EDF4;
+  color: #172B3A;
+  border-right: 1px solid #C5D5E0;
+}
+
+.light-mode .sidebar-logo {
+  color: #1769AA;
+}
+
+.light-mode .sidebar-link {
+  color: #52697A;
+}
+
+.light-mode .sidebar-link:hover {
+  background: #E8F3F8;
+  color: #1769AA;
+}
+
+.light-mode .sidebar-link.active {
+  background: #D4E8F5;
+  color: #145A91;
+  border-color: #AFCDE0;
+}
+
+.light-mode .sidebar-icon {
+  opacity: 1;
+}
+
+
+/* =========================================================
+   PANELS / CARDS
+   ========================================================= */
+
+.light-mode .panel,
+.light-mode .card,
+.light-mode .experiment-card,
+.light-mode .experiment-details-card {
+  background: #FFFFFF;
+  color: #172B3A;
+  border: 1px solid #C5D5E0;
+
+  box-shadow:
+    0 4px 14px rgba(23, 43, 58, 0.06);
+}
+
+
+/* =========================================================
+   PANEL TITLES
+   ========================================================= */
+
+.light-mode .panel-title,
+.light-mode .page-title h2,
+.light-mode .experiment-info h3,
+.light-mode .experiment-details-header h3 {
+  color: #172B3A;
+}
+
+
+/* =========================================================
+   SECONDARY TEXT
+   ========================================================= */
+
+.light-mode .page-title p,
+.light-mode .experiment-info p,
+.light-mode .experiment-details-header p,
+.light-mode .experiment-step-info small {
+  color: #52697A;
+}
+
+
+/* =========================================================
+   EXPERIMENT STEPS
+   ========================================================= */
+
+.light-mode .experiment-step {
+  background: #FFFFFF;
+  border-bottom: 1px solid #D8E2E9;
+}
+
+.light-mode .experiment-step-number {
+  background: #1769AA;
+  color: #FFFFFF;
+}
+
+.light-mode .experiment-step-info strong {
+  color: #52697A;
+}
+
+.light-mode .experiment-step-info span {
+  color: #172B3A;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.light-mode .experiment-status {
+  background: #E3F6EF;
+  color: #087F5B;
+  border: 1px solid #A8DCC8;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.light-mode .experiment-back {
+  background: #FFFFFF;
+  color: #52697A;
+  border: 1px solid #AFC0CC;
+}
+
+.light-mode .experiment-back:hover {
+  background: #E8F3F8;
+  color: #1769AA;
+}
+
+.light-mode .experiment-start,
+.light-mode .experiment-start-large {
+  background: #1769AA;
+  color: #FFFFFF;
+  border: 1px solid #1769AA;
+}
+
+.light-mode .experiment-start:hover,
+.light-mode .experiment-start-large:hover {
+  background: #145A91;
+}
+
+
+/* =========================================================
+   THEME BUTTON
+   ========================================================= */
+
+.light-mode .theme-toggle {
+  background: #FFFFFF;
+  color: #1769AA;
+  border: 1px solid #AFCDE0;
+}
+
+.light-mode .theme-toggle:hover {
+  background: #E8F3F8;
+  border-color: #1769AA;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.light-mode footer {
+  background: #F8FBFD;
+  color: #52697A;
+  border-top: 1px solid #C5D5E0;
+}
+
+
+/* =========================================================
+   DIVIDERS
+   ========================================================= */
+
+.light-mode hr,
+.light-mode .divider {
+  border-color: #cdbde5;
+}
+/* =========================================================
+   HEADER CONTROLS
+   ========================================================= */
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.monitoring-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    align-items: start;
+}
+
+.camera-card {
+    align-self: start;
+}
+
+.camera-feed {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+
+/* ==========================================
+   OFFLINE CAMERA
+========================================== */
+
+.camera-offline {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+/* =========================================================
+   CAMERA PANEL
+========================================================= */
+
+.camera {
+  width: 100%;
+  align-self: start;
+}
+
+
+/* =========================================================
+   CAMERA PANEL HEADER
+========================================================= */
+
+.camera .panel-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+
+/* =========================================================
+   CAMERA BOX
+========================================================= */
+
+.camera-box {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #111820;
+}
+
+
+/* =========================================================
+   LIVE CAMERA IMAGE
+========================================================= */
+
+.live-camera {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+
+/* =========================================================
+   CAMERA OFFLINE
+========================================================= */
+
+.camera-offline {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #111820;
+}
+
+.camera-offline h2 {
+  margin: 0 0 8px;
+}
+
+.camera-offline p {
+  margin: 0 0 8px;
+}
+
+.camera-offline small {
+  opacity: 0.6;
+}
+
+
+/* =========================================================
+   CAMERA STATUS
+========================================================= */
+
+.camera .live {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.camera .offline-camera {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   CAMERA CONTROLS
+========================================================= */
+
+.camera .recording-controls {
+  margin-bottom: 12px;
+}
+.dashboard {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-areas:
+    "camera status"
+    "detection mission";
+  gap: 18px;
+  align-items: start;
+}
+
+.camera {
+  grid-area: camera;
+}
+
+.status {
+  grid-area: status;
+}
+
+.detection {
+  grid-area: detection;
+}
+
+.mission {
+  grid-area: mission;
+}
+.dashboard-left,
+.dashboard-right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+  align-self: start;
+}
+/* =========================================================
+   ISRO LOGO — SIDEBAR
+   ========================================================= */
+
+.sidebar-logo {
+  width: 100%;
+  height: 110px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 18px 0;
+  box-sizing: border-box;
+
+  overflow: hidden;
+}
+
+.sidebar-logo img {
+  width: 90px !important;
+  height: 90px !important;
+
+  max-width: 90px !important;
+  max-height: 90px !important;
+
+  min-width: 0 !important;
+  min-height: 0 !important;
+
+  object-fit: contain !important;
+  object-position: center;
+
+  display: block;
+}
+/* ==========================================
+   TEXT FILES
+========================================== */
+
+.text-files-page {
+  padding: 28px 20px;
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.page-title h2 {
+  margin: 0;
+  font-size: 30px;
+}
+
+.page-title p {
+  margin-top: 8px;
+  color: #64748b;
+}
+
+
+/* ==========================================
+   TWO COLUMN LAYOUT
+========================================== */
+
+.text-files-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 20px;
+}
+
+
+/* ==========================================
+   FILE LIST
+========================================== */
+
+.text-file-list,
+.text-file-viewer {
+  background: var(--panel-bg, #ffffff);
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+
+.section-header h3 {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+
+.section-header button {
+  border: 0;
+  background: #1672b8;
+  color: white;
+  padding: 7px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+
+.text-file-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 18px;
+  border: 0;
+  border-bottom: 1px solid #e5e7eb;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+
+.text-file-item:hover {
+  background: #eef6fb;
+}
+
+
+.text-file-item.selected {
+  background: #dceefa;
+}
+
+
+.file-icon {
+  font-size: 22px;
+}
+
+
+.file-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+
+.file-info strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.file-info span {
+  font-size: 11px;
+  color: #64748b;
+}
+
+
+/* ==========================================
+   VIEWER
+========================================== */
+
+.text-file-viewer {
+  min-height: 550px;
+}
+
+
+.viewer-header {
+  padding: 18px 22px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+
+.viewer-header span {
+  font-size: 10px;
+  color: #64748b;
+  letter-spacing: 1px;
+}
+
+
+.viewer-header h3 {
+  margin: 6px 0 0;
+  font-size: 17px;
+}
+
+
+.log-content {
+  margin: 0;
+  padding: 22px;
+  min-height: 480px;
+  max-height: 650px;
+  overflow: auto;
+
+  background: #0f1720;
+  color: #d7e2ea;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+
+  font-size: 13px;
+  line-height: 1.6;
+
+  white-space: pre-wrap;
+}
+
+
+.viewer-empty,
+.empty-files {
+  padding: 60px 25px;
+  text-align: center;
+  color: #64748b;
+}
+
+
+.viewer-icon {
+  font-size: 38px;
+  margin-bottom: 12px;
+}
+/* =========================================================
+   HUMAN 3D MESH PAGE
+   ========================================================= */
+
+.human-mesh-page {
+  width: 100%;
+}
+
+
+/* =========================================================
+   MAIN CARD
+   ========================================================= */
+
+.human-mesh-card {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 14px;
+
+  border: 1px solid rgba(30, 50, 70, 0.14);
+  background: #ffffff;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.human-mesh-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 16px;
+}
+
+.human-mesh-header h3 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.human-mesh-header p {
+  margin: 4px 0 0;
+  opacity: 0.65;
+  font-size: 14px;
+}
+
+.human-mesh-status {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+
+/* =========================================================
+   TWO PANELS
+   ========================================================= */
+
+.human-mesh-panels {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
+  gap: 14px;
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   PANEL
+   ========================================================= */
+
+.human-mesh-panel {
+  min-width: 0;
+
+  border-radius: 11px;
+
+  border: 1px solid rgba(30, 50, 70, 0.14);
+
+  background: #ffffff;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   PANEL HEADER
+   ========================================================= */
+
+.human-mesh-panel-header {
+  height: 58px;
+
+  padding: 11px 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  box-sizing: border-box;
+
+  border-bottom: 1px solid rgba(30, 50, 70, 0.10);
+}
+
+.human-mesh-panel-header h4 {
+  margin: 0;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  letter-spacing: 0.3px;
+}
+
+.human-mesh-panel-header span {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 10px;
+
+  opacity: 0.55;
+}
+
+.human-mesh-panel-header .panel-status {
+  margin: 0;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  opacity: 0.55;
+}
+
+
+/* =========================================================
+   CAMERA VIEW
+   IMPORTANT:
+   ALWAYS DARK — EVEN IN LIGHT MODE
+   ========================================================= */
+
+.human-mesh-camera {
+  width: 100%;
+
+  height: 390px;
+
+  background: #05070a;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+}
+
+.human-mesh-camera img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: contain;
+
+  background: #05070a;
+}
+
+
+/* =========================================================
+   3D VIEW
+   IMPORTANT:
+   ALWAYS DARK — EVEN IN LIGHT MODE
+   ========================================================= */
+
+.human-mesh-viewer {
+  width: 100%;
+
+  height: 390px;
+
+  background: #05070a;
+
+  border: none;
+
+  border-radius: 0;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   3D PLACEHOLDER
+   ========================================================= */
+
+.human-mesh-placeholder {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  background: #05070a;
+
+  color: #ffffff;
+}
+
+.mesh-icon {
+  font-size: 55px;
+
+  margin-bottom: 8px;
+}
+
+.human-mesh-placeholder h2 {
+  margin: 0 0 6px;
+
+  color: #ffffff;
+
+  font-size: 22px;
+
+  letter-spacing: 0.8px;
+}
+
+.human-mesh-placeholder p {
+  margin: 0 0 6px;
+
+  color: #ffffff;
+
+  opacity: 0.65;
+
+  font-size: 13px;
+}
+
+.human-mesh-placeholder span {
+  color: #ffffff;
+
+  font-size: 10px;
+
+  opacity: 0.4;
+}
+
+
+/* =========================================================
+   INFORMATION CARDS
+   ========================================================= */
+
+.human-mesh-info {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 12px;
+
+  margin-top: 14px;
+}
+
+.human-mesh-info > div {
+  min-width: 0;
+
+  padding: 12px;
+
+  border-radius: 9px;
+
+  background: #f7f9fb;
+
+  border: 1px solid rgba(30, 50, 70, 0.10);
+
+  text-align: center;
+
+  box-sizing: border-box;
+}
+
+.human-mesh-info small {
+  display: block;
+
+  font-size: 9px;
+
+  opacity: 0.5;
+
+  margin-bottom: 5px;
+}
+
+.human-mesh-info strong {
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+.app-shell:not(.light-mode) .human-mesh-card {
+  background: rgba(255, 255, 255, 0.025);
+
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.app-shell:not(.light-mode) .human-mesh-panel {
+  background: rgba(255, 255, 255, 0.025);
+
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.app-shell:not(.light-mode) .human-mesh-panel-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.app-shell:not(.light-mode) .human-mesh-info > div {
+  background: rgba(255, 255, 255, 0.03);
+
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .human-mesh-panels {
+    grid-template-columns: 1fr;
+  }
+
+  .human-mesh-camera,
+  .human-mesh-viewer {
+    height: 340px;
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .human-mesh-card {
+    padding: 12px;
+  }
+
+  .human-mesh-header {
+    align-items: flex-start;
+
+    gap: 10px;
+  }
+
+  .human-mesh-header h3 {
+    font-size: 15px;
+  }
+
+  .human-mesh-header p {
+    font-size: 12px;
+  }
+
+  .human-mesh-camera,
+  .human-mesh-viewer {
+    height: 280px;
+  }
+
+  .human-mesh-info {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+/* =========================================================
+   TWO-PANEL VIEWER
+   ========================================================= */
+
+.human-mesh-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.human-mesh-panel {
+  min-width: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.human-mesh-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.human-mesh-panel-header h4 {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 0.4px;
+}
+
+.human-mesh-panel-header span {
+  font-size: 11px;
+  opacity: 0.55;
+}
+
+
+
+/* =========================================================
+   CAMERA
+   ========================================================= */
+
+.human-mesh-camera {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: #05070a;
+  overflow: hidden;
+}
+
+.human-mesh-camera img,
+.human-mesh-camera video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+
+/* =========================================================
+   3D MESH
+   ========================================================= */
+
+.human-mesh-viewer {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  min-height: 0;
+  background: #05070a;
+  border: 0;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.human-mesh-viewer iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+
+/* Placeholder */
+
+.human-mesh-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.mesh-icon {
+  font-size: 64px;
+  margin-bottom: 10px;
+}
+
+.human-mesh-placeholder h2 {
+  margin: 0 0 8px;
+  letter-spacing: 1px;
+}
+
+.human-mesh-placeholder p {
+  margin: 0 0 8px;
+  opacity: 0.7;
+}
+
+.human-mesh-placeholder span {
+  font-size: 12px;
+  opacity: 0.45;
+}
+
+
+/* =========================================================
+   INFO
+   ========================================================= */
+
+.human-mesh-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.human-mesh-info > div {
+  padding: 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.human-mesh-info small {
+  display: block;
+  font-size: 10px;
+  opacity: 0.55;
+  margin-bottom: 5px;
+}
+
+.human-mesh-info strong {
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   LIGHT MODE
+   ========================================================= */
+
+.light-mode .human-mesh-card {
+  background: #ffffff;
+  border: 1px solid #cbd9e3;
+  box-shadow: 0 4px 14px rgba(35, 65, 85, 0.07);
+}
+
+.light-mode .human-mesh-panel {
+  background: #f8fafc;
+  border: 1px solid #ccdbe5;
+}
+
+.light-mode .human-mesh-panel-header {
+  background: #ffffff;
+  border-bottom: 1px solid #d5e1e8;
+}
+
+.light-mode .human-mesh-panel-header h4 {
+  color: #172b3a;
+}
+
+.light-mode .human-mesh-panel-header span {
+  color: #60798b;
+}
+
+.light-mode .human-mesh-camera,
+.light-mode .human-mesh-viewer {
+  background: #f1f5f8;
+}
+
+.light-mode .human-mesh-info > div {
+  background: #f8fafc;
+  border: 1px solid #d5e0e7;
+}
+
+.light-mode .human-mesh-info small {
+  color: #60798b;
+}
+
+.light-mode .human-mesh-info strong {
+  color: #172b3a;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .human-mesh-panels {
+    grid-template-columns: 1fr;
+  }
+
+  .human-mesh-info {
+    grid-template-columns: 1fr;
+  }
+
+}
+.human-mesh-camera img,
+.human-mesh-3d-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: #05070a;
+}
+
+.human-mesh-camera,
+.human-mesh-viewer {
+  overflow: hidden;
+  background: #05070a;
+}
+/* ==========================================
+   HUMAN 3D CONTROLS
+   ========================================== */
+
+.human-mesh-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 18px;
+  padding: 12px;
+
+  border-radius: 10px;
+
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+.human-mesh-controls button {
+  border: none;
+  border-radius: 8px;
+
+  padding: 10px 16px;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+
+
+.human-mesh-controls button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+
+.human-mesh-controls button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+
+.human-mesh-start {
+  background: #16a34a;
+  color: white;
+}
+
+
+.human-mesh-stop {
+  background: #dc2626;
+  color: white;
+}
+
+
+.human-mesh-process-status {
+  margin-left: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-end;
+}
+
+
+.human-mesh-process-status span {
+  font-size: 9px;
+  opacity: 0.45;
+}
+
+
+.human-mesh-process-status strong {
+  font-size: 11px;
+}
+
+
+/* ==========================================
+   OFFLINE VIEW
+   ========================================== */
+
+.human-mesh-offline {
+
+  width: 100%;
+  height: 100%;
+
+  min-height: 360px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  background: #05070a;
+
+  color: white;
+}
+
+
+.human-mesh-offline div {
+  font-size: 42px;
+}
+
+
+.human-mesh-offline strong {
+  font-size: 13px;
+}
+
+
+.human-mesh-offline span {
+  font-size: 11px;
+  opacity: 0.45;
+}
+.human-mesh-iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 330px;
+  border: none;
+  display: block;
+  background: #f1f5f8;
+}
+
+.mesh-offline {
+  width: 100%;
+  height: 100%;
+  min-height: 330px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background: #050505;
+  color: #8b9299;
+
+  text-align: center;
+}
+
+.mesh-offline div {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.mesh-offline span {
+  font-size: 14px;
+  color: #666;
+}
+.stop-experiment-button {
+  width: 100%;
+  margin: 12px 0 18px 0;
+  padding: 12px 16px;
+
+  border: 1px solid #ff4d4d;
+  border-radius: 8px;
+
+  background: #3a1111;
+  color: #ff6b6b;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.stop-experiment-button:hover {
+  background: #ff4d4d;
+  color: white;
+}
+
+.stop-experiment-button:active {
+  transform: scale(0.98);
+}

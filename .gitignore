@@ -1,0 +1,60 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# YOLO / ML models
+*.pt
+*.onnx
+*.weights
+
+# Node / React
+node_modules/
+dist/
+build/
+
+# Environment / secrets
+.env
+.env.*
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+# Runtime recordings
+backend/recordings/
+
+# Runtime logs
+backend/logs/
+camera/logs/
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# ML models
+*.pt
+*.onnx
+*.weights
+
+# React
+node_modules/
+dist/
+build/
+
+# Environment
+.env
+.env.*
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/

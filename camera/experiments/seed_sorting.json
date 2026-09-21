@@ -1,0 +1,35 @@
+{
+  "name": "Seed Sorting Experiment",
+  "description": "Sequential red and blue seed sorting using hand interaction and calibrated container regions.",
+  "error_detection": false,
+  "steps": [
+    {
+      "id": 1,
+      "action": "PICK_RED_SEED",
+      "instruction": "Pick up the red seed",
+      "object": "RED",
+      "source": "SEED AREA"
+    },
+    {
+      "id": 2,
+      "action": "PLACE_RED_SEED",
+      "instruction": "Place the red seed into Container A",
+      "object": "RED",
+      "target": "CONTAINER A"
+    },
+    {
+      "id": 3,
+      "action": "PICK_BLUE_SEED",
+      "instruction": "Pick up the blue seed",
+      "object": "BLUE",
+      "source": "SEED AREA"
+    },
+    {
+      "id": 4,
+      "action": "PLACE_BLUE_SEED",
+      "instruction": "Place the blue seed into Container B",
+      "object": "BLUE",
+      "target": "CONTAINER B"
+    }
+  ]
+}

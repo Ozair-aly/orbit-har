@@ -1,0 +1,30 @@
+{
+    "name": "Container Orientation Experiment",
+    "steps": [
+        {
+            "id": 1,
+            "action": "PICK_CONTAINER",
+            "instruction": "Pick up the sample container"
+        },
+        {
+            "id": 2,
+            "action": "TILT_CONTAINER",
+            "instruction": "Tilt the sample container"
+        },
+        {
+            "id": 3,
+            "action": "SHAKE_CONTAINER",
+            "instruction": "Shake the sample container"
+        },
+        {
+            "id": 4,
+            "action": "RETURN_UPRIGHT",
+            "instruction": "Return the sample container to an upright position"
+        },
+        {
+            "id": 5,
+            "action": "PUT_CONTAINER_DOWN",
+            "instruction": "Put the sample container down"
+        }
+    ]
+}

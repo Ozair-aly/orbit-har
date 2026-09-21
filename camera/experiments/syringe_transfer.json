@@ -1,0 +1,31 @@
+
+{
+  "name": "Syringe Liquid Transfer",
+  "steps": [
+    {
+      "id": 1,
+      "action": "PICK_SYRINGE",
+      "instruction": "Pick up the syringe"
+    },
+    {
+      "id": 2,
+      "action": "INSERT_CONTAINER_A",
+      "instruction": "Insert the syringe into Container A (green)"
+    },
+    {
+      "id": 3,
+      "action": "DRAW_LIQUID",
+      "instruction": "Draw liquid into the syringe"
+    },
+    {
+      "id": 4,
+      "action": "INSERT_CONTAINER_B",
+      "instruction": "Insert the syringe into Container B (yellow)"
+    },
+    {
+      "id": 5,
+      "action": "RETURN_SYRINGE",
+      "instruction": "Put the syringe back in its original position"
+    }
+  ]
+}
