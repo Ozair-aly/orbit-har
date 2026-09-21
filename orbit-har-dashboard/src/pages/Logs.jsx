@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const LOGS_URL = "http://127.0.0.1:8000/logs";
+const LOGS_URL = "https://orbit-har-1.onrender.com/logs";
 
 const FILTERS = [
   { key: "ALL", label: "All" },

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "https://orbit-har-1.onrender.com";
 
 function formatElapsed(totalSeconds) {
   const m = String(Math.floor(totalSeconds / 60)).padStart(2, "0");

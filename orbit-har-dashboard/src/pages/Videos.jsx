@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "https://orbit-har-1.onrender.com";
 const VIDEOS_URL = `${BASE_URL}/videos`;
 
 function formatBytes(bytes) {

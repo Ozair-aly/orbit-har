@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-const WS_URL = "ws://127.0.0.1:8000/ws";
-const CAMERA_STATUS_URL = "http://127.0.0.1:8000/camera/status";
+const WS_URL = "wss://orbit-har-1.onrender.com/ws";
+const CAMERA_STATUS_URL = "https://orbit-har-1.onrender.com/camera/status";
 
 export function useOrbitSocket() {
 
