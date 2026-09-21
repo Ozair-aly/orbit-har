@@ -1,0 +1,10 @@
+{"experiment": "Container Orientation Experiment", "step": 3, "action": "Shake the sample container", "status": "SUCCESS", "time": "17:14:21"}
+{"experiment": "Container Orientation Experiment", "step": 4, "action": "Return the sample container to an upright position", "status": "SUCCESS", "time": "17:14:29"}
+{"experiment": "Container Orientation Experiment", "step": 5, "action": "EXPERIMENT COMPLETED", "status": "SUCCESS", "time": "17:14:38"}
+{"experiment": "Container Orientation Experiment", "step": 1, "action": "Pick up the sample container", "status": "SUCCESS", "time": "14:33:08"}
+{"experiment": "Container Orientation Experiment", "step": 2, "action": "Tilt the sample container", "status": "SUCCESS", "time": "14:33:10"}
+{"experiment": "Container Orientation Experiment", "step": 3, "action": "Shake the sample container", "status": "SUCCESS", "time": "14:33:12"}
+{"experiment": "Container Orientation Experiment", "step": 4, "action": "Return the sample container to an upright position", "status": "SUCCESS", "time": "14:33:13"}
+{"experiment": "Container Orientation Experiment", "step": 1, "action": "Pick up the sample container", "status": "WRONG", "time": "14:33:47"}
+{"experiment": "Container Orientation Experiment", "step": 2, "action": "Tilt the sample container", "status": "SUCCESS", "time": "14:33:55"}
+{"experiment": "Container Orientation Experiment", "step": 3, "action": "Shake the sample container", "status": "WRONG", "time": "14:34:08"}
