@@ -1,8 +1,8 @@
-# 🚀 ORBIT-HAR
+# 🚀 ORBIT-HAR (Onboard Real-time Behavioral and  Interactional Tracking for Human Activity Recognition)
 
 ## AI Human Activity Recognition for On-Board BAS Experiments
 
-**ORBIT-HAR** is an AI-powered, edge-deployable Human Activity Recognition and Experiment Monitoring system designed for **on-board biological/physical science experiments in space missions**.
+**ORBIT-HAR** is an AI-powered, edge-deployable ,offline Human Activity Recognition and Experiment Monitoring system designed for **on-board biological/physical science experiments in space missions**.
 
 The system allows an astronaut-side computer to locally monitor experimental activities using camera-based AI, recognize predefined actions, validate their sequence, detect incorrect or unexpected actions, and provide real-time feedback through a mission-control-style dashboard.
 
