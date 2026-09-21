@@ -793,7 +793,7 @@ The deployed system can then run entirely on the local machine.
 ## 1. Clone the repository
 
 ```bash
-git clone https://github.com/<YOUR-USERNAME>/<YOUR-REPOSITORY>.git
+git clone https://github.com/h1e2l3l4o5/ORBIT-HAR.git
 cd ORBIT-HAR
 ```
 
@@ -1521,38 +1521,38 @@ Potential applications include:
 
 ## Phase 2 — Robust AI
 
-* [ ] Custom experiment dataset
-* [ ] Custom YOLO training
-* [ ] Improved object tracking
-* [ ] Temporal activity recognition
-* [ ] Better hand-object interaction
-* [ ] Robust orientation handling
+* [x] Custom experiment dataset
+* [x] Custom YOLO training
+* [x] Improved object tracking
+* [x] Temporal activity recognition
+* [x] Better hand-object interaction
+* [x] Robust orientation handling
 
 ## Phase 3 — Edge Deployment
 
-* [ ] Complete offline packaging
-* [ ] Automated installation
-* [ ] One-command startup
-* [ ] Hardware optimization
-* [ ] GPU/accelerator support
-* [ ] Resource monitoring
+* [x] Complete offline packaging
+* [x] Automated installation
+* [x] One-command startup
+* [x] Hardware optimization
+* [x] GPU/accelerator support
+* [x] Resource monitoring
 
 ## Phase 4 — Mission Control
 
-* [ ] Remote mission-control client
-* [ ] Live camera stream
-* [ ] Remote experiment monitoring
-* [ ] Event synchronization
+* [x] Remote mission-control client
+* [x] Live camera stream
+* [x] Remote experiment monitoring
+* [x] Event synchronization
 * [ ] Network interruption recovery
 * [ ] Secure communication
 
 ## Phase 5 — Advanced Space AI
 
-* [ ] Orientation-agnostic 3D human pose
-* [ ] Human mesh reconstruction
-* [ ] Multi-camera support
+* [x] Orientation-agnostic 3D human pose
+* [x] Human mesh reconstruction
+* [x] Multi-camera support
 * [ ] Autonomous experiment recovery
-* [ ] Long-duration autonomous monitoring
+* [x] Long-duration autonomous monitoring
 * [ ] Multi-experiment management
 
 ---
@@ -1606,7 +1606,7 @@ The system should assist the astronaut and mission-control team rather than repl
 Clone the repository:
 
 ```bash
-git clone https://github.com/<YOUR-USERNAME>/<YOUR-REPOSITORY>.git
+git clone https://github.com/h1e2l3l4o5/ORBIT-HAR.git
 cd ORBIT-HAR
 ```
 
