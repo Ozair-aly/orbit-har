@@ -146,7 +146,7 @@ function Experiments() {
 
     try {
       const response = await fetch(
-        "https://orbit-har-1.onrender.com/experiment/start",
+        "http://127.0.0.1:8000/experiment/start",
         {
           method: "POST",
           headers: {

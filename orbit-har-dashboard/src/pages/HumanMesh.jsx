@@ -5,7 +5,7 @@ function HumanMesh() {
   const [running, setRunning] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const BACKEND = "https://orbit-har-1.onrender.com";
+  const BACKEND = "http://127.0.0.1:8000";
   const HUMAN_MESH = "http://127.0.0.1:8010";
 
 

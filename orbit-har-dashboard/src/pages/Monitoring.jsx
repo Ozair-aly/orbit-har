@@ -1,6 +1,6 @@
 import RecordingControls from "../components/RecordingControls";
 
-const cameraUrl = "https://orbit-har-1.onrender.com/video";
+const cameraUrl = "http://127.0.0.1:8000/video";
 
 function formatObjectName(name) {
   return name
@@ -268,7 +268,7 @@ function Monitoring({
 
     try {
       const response = await fetch(
-        "https://orbit-har-1.onrender.com/experiment/stop",
+        "http://127.0.0.1:8000/experiment/stop",
         {
           method: "POST",
         }
