@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BACKEND_URL } from "../config.js";
 
 const EXPERIMENTS = [
   {
@@ -146,7 +147,7 @@ function Experiments() {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/experiment/start",
+        `${BACKEND_URL}/experiment/start`,
         {
           method: "POST",
           headers: {

@@ -13,3 +13,4 @@
 {"experiment": "Container Orientation Experiment", "step": 3, "action": "Shake the sample container", "status": "SUCCESS", "time": "17:02:32"}
 {"experiment": "Container Orientation Experiment", "step": 4, "action": "Return the sample container to an upright position", "status": "SUCCESS", "time": "17:02:42"}
 {"experiment": "Container Orientation Experiment", "step": 5, "action": "EXPERIMENT COMPLETED", "status": "SUCCESS", "time": "17:02:50"}
+{"experiment": "Container Orientation Experiment", "step": 1, "action": "Pick up the sample container", "status": "SUCCESS", "time": "23:04:08"}

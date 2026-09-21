@@ -1,3 +1,11 @@
+import sys
+import os
+
+if sys.stdout and hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if sys.stderr and hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import cv2
 import mediapipe as mp
 from ultralytics import YOLO
@@ -131,7 +139,8 @@ def send_frame(frame):
 # CONFIG
 # ============================================================
 
-EXPERIMENT_FILE = "experiments/liquid_transfer.json"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+EXPERIMENT_FILE = os.path.join(BASE_DIR, "experiments", "liquid_transfer.json")
 
 # Dashboard status
 AI_STATUS_INTERVAL = 0.5
@@ -538,7 +547,13 @@ class OrbitHAR:
 
 print("🤖 Loading ORBIT-HAR AI...")
 
-yolo = YOLO("yolo11n.pt")
+yolo_path = os.path.join(BASE_DIR, "yolo11n.pt")
+if not os.path.exists(yolo_path):
+    yolo_path = os.path.join(os.path.dirname(BASE_DIR), "models", "yolo11n.pt")
+if not os.path.exists(yolo_path):
+    yolo_path = "yolo11n.pt"
+
+yolo = YOLO(yolo_path)
 
 
 # ============================================================
@@ -560,8 +575,9 @@ hands = mp_hands.Hands(
 # CAMERA
 # ============================================================
 
-# KEEP THIS EXACTLY AS YOUR WORKING VERSION
 camera = cv2.VideoCapture(0)
+if not camera.isOpened():
+    camera = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
 if not camera.isOpened():
 

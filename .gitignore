@@ -1,5 +1,7 @@
 # Python
 venv/
+.venv/
+wheels/
 __pycache__/
 *.pyc
 

@@ -1,8 +1,8 @@
 opencv-python
-mediapipe
+mediapipe==0.10.14
 ultralytics
 requests
 fastapi
 uvicorn
 websockets
-numpy==1.26.4
+matplotlib

@@ -1,3 +1,11 @@
+import sys
+import os
+
+if sys.stdout and hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if sys.stderr and hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -82,10 +90,9 @@ pose = mp_pose.Pose(
 # CAMERA
 # ============================================================
 
-cap = cv2.VideoCapture(
-    CAMERA_INDEX,
-    cv2.CAP_AVFOUNDATION
-)
+cap = cv2.VideoCapture(CAMERA_INDEX)
+if not cap.isOpened():
+    cap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)
 
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, CAMERA_WIDTH)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, CAMERA_HEIGHT)

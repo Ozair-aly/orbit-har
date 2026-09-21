@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { BACKEND_URL } from "../config.js";
 
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = BACKEND_URL;
 
 function formatElapsed(totalSeconds) {
   const m = String(Math.floor(totalSeconds / 60)).padStart(2, "0");

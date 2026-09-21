@@ -1710,8 +1710,182 @@ Designed as an edge-AI experiment monitoring system for structured experiments i
 
 ---
 
-## ⭐ If you find this project interesting
+# 💻 OFFLINE WINDOWS DEPLOYMENT (SIH DEMONSTRATION)
 
-Consider starring the repository and following its development as ORBIT-HAR evolves from a prototype into a complete edge-AI experiment monitoring platform.
+This guide explains how to prepare, verify, and run the complete **ORBIT-HAR** system offline on a Windows laptop for live demonstrations with **zero internet connection**.
+
+---
+
+## 📋 A. One-Time Setup (While Internet is Available)
+
+Before arriving at the demonstration venue, complete these steps once:
+
+1. Clone or copy the ORBIT-HAR repository to your laptop.
+2. Double-click **`setup.bat`** (or run `.\setup.bat` in Command Prompt).
+3. The setup script will automatically:
+   - Check your Python and Node.js installations.
+   - Create a Python virtual environment (`.venv`).
+   - Install all required Python packages (`opencv-python`, `mediapipe==0.10.14`, `ultralytics`, `fastapi`, `uvicorn`, `websockets`, `matplotlib`, `numpy`).
+   - Download the YOLO11n weights (`yolo11n.pt`) and place them in `camera/` and `models/`.
+   - Install npm packages in `orbit-har-dashboard/`.
+   - Build the production React frontend bundle in `orbit-har-dashboard/dist/`.
+   - Populate the offline wheel cache in `wheels/` for offline portability.
+
+---
+
+## 🛠️ B. Required Software
+
+* **Operating System**: Windows 10 or Windows 11 (64-bit)
+* **Python**: Python 3.10 or 3.11 ([python.org](https://www.python.org/downloads/)) — *Must check "Add Python to PATH" during installation*
+* **Node.js**: Node.js v18, v20, or v22 LTS ([nodejs.org](https://nodejs.org/))
+* **Webcam**: Built-in laptop webcam or external USB webcam
+
+---
+
+## 📦 C. Required Downloads & Offline Files
+
+All of these are automatically downloaded and cached by `setup.bat`:
+
+| File / Folder | Purpose | Local Path |
+|---|---|---|
+| `models/yolo11n.pt` & `camera/yolo11n.pt` | YOLO11 Object Detection Weights (~5.4 MB) | `camera/yolo11n.pt` |
+| `wheels/*.whl` | Pre-downloaded Python wheels cache | `wheels/` |
+| `orbit-har-dashboard/node_modules/` | Installed frontend npm packages | `orbit-har-dashboard/node_modules` |
+| `orbit-har-dashboard/dist/` | Compiled production dashboard bundle | `orbit-har-dashboard/dist` |
+
+---
+
+## ⌨️ D. Installation Commands (Manual Alternative)
+
+If you prefer running commands manually instead of `setup.bat`:
+
+```powershell
+# 1. Create and activate Python virtual environment
+python -m venv .venv
+.\.venv\Scripts\activate
+
+# 2. Install dependencies (from offline wheels if available, or online)
+pip install -r requirements.txt matplotlib
+
+# 3. Setup YOLO weights
+python -c "import os, shutil; from ultralytics import YOLO; model = YOLO('yolo11n.pt'); os.makedirs('models', exist_ok=True); shutil.copy('yolo11n.pt', 'models/yolo11n.pt'); shutil.copy('yolo11n.pt', 'camera/yolo11n.pt')"
+
+# 4. Install and build frontend
+cd orbit-har-dashboard
+npm install
+npm run build
+cd ..
+```
+
+---
+
+## ✅ E. How to Verify Installation
+
+Run the offline verification test:
+
+```powershell
+.\.venv\Scripts\python.exe -c "from ultralytics import YOLO; import mediapipe as mp, cv2, fastapi, uvicorn, websockets; print('All ML/CV/Web libraries verified!')"
+```
+
+Expected output:
+```text
+All ML/CV/Web libraries verified!
+```
+
+---
+
+## ✈️ F. How to Disconnect from Internet (SIH Simulation)
+
+1. Turn off Wi-Fi on your laptop (or enable Airplane Mode).
+2. Unplug any Ethernet cable.
+3. Verify that your browser cannot reach google.com.
+
+---
+
+## 🚀 G. How to Start the Application (Offline)
+
+Simply **double-click `start.bat`**.
+
+This launches:
+1. **FastAPI Backend**: `http://127.0.0.1:8000`
+2. **React Dashboard**: `http://localhost:5173`
+3. Automatically opens your default web browser to the Mission Control dashboard.
+
+### During the Live Presentation:
+1. **Monitoring Page (`/`)**: Displays the live camera feed, AI object detection states, hand-tracking indicators, and step validation status.
+2. **Experiments Page (`/experiments`)**:
+   - **Container Orientation Experiment**: YOLO11n + MediaPipe hand tracking for bottle manipulation sequence.
+   - **Syringe Liquid Transfer**: Color + Hough geometry + hand tracking for liquid transfer.
+   - **Seed Sorting Experiment**: Real-time red/blue seed placement validation.
+3. **3D Human Mesh (`/human-mesh`)**: Click `START HUMAN 3D` to stream real-time 3D pose landmarks on port 8010.
+4. **Logs & Videos (`/logs`, `/videos`, `/text-files`)**: View real-time experiment logs, recordings, and raw text outputs.
+
+---
+
+## 🛑 H. How to Stop the Application
+
+Double-click **`stop.bat`** (or run `.\stop.bat`).
+
+This cleanly terminates all background processes on ports 8000, 8010, and 5173.
+
+---
+
+## 🔌 J. Ports Used by Components
+
+| Port | Service | Protocol | Description |
+|---|---|---|---|
+| `8000` | FastAPI Backend | HTTP & WS | REST API (`/event`, `/frame`, `/video`, `/logs`), WebSocket (`/ws`) |
+| `5173` | Frontend Dashboard | HTTP | React / Vite UI |
+| `8010` | 3D Human Mesh Server | HTTP | MediaPipe 3D projection & video streams (`/mesh`, `/video`) |
+
+---
+
+## 📁 K. Folder Structure
+
+```text
+orbit-har/
+├── setup.bat                 # One-time preparation script
+├── start.bat                 # 1-click offline launcher
+├── stop.bat                  # 1-click process cleanup
+├── requirements.txt          # Python dependency specifications
+├── .env.example              # Environment defaults
+├── backend/
+│   ├── main.py               # FastAPI backend entrypoint & router
+│   ├── recording.py          # Video recorder and log manager
+│   └── logs/                 # Experiment history jsonl files
+├── camera/
+│   ├── live_orbit_har.py     # Container Orientation AI engine
+│   ├── orbit_har_syringe.py  # Syringe Liquid Transfer AI engine
+│   ├── firdous_experiment.py # Seed Sorting AI engine
+│   ├── calibrate.py          # HSV color calibration tool
+│   ├── logger.py             # File logging helper
+│   ├── yolo11n.pt            # Pre-downloaded YOLO11 weights
+│   └── experiments/          # JSON sequence configuration files
+├── human_mesh/
+│   └── mediapipe_3d_viewer.py# 3D Human Pose Mesh server (Port 8010)
+├── models/
+│   └── yolo11n.pt            # Local weights archive
+├── wheels/                   # Offline Python wheels cache
+└── orbit-har-dashboard/      # React 19 frontend
+    ├── package.json
+    ├── vite.config.js
+    ├── dist/                 # Production compiled assets
+    └── src/
+        ├── pages/            # Monitoring, Experiments, Logs, etc.
+        └── hooks/            # useOrbitSocket (WebSocket connection)
+```
+
+---
+
+## ❓ I. Troubleshooting
+
+* **"Camera OFFLINE" shown on dashboard**:
+  - Make sure you clicked "Start Experiment" on the **Experiments** tab. The camera subprocess starts dynamically for the selected experiment.
+  - If using an external USB webcam, ensure camera index 0 is available or adjust `CAMERA_INDEX = 0` in the experiment file.
+* **"Port already in use" error**:
+  - Run `stop.bat` to terminate any previous background instances, then run `start.bat` again.
+* **Voice assistant audio silent**:
+  - Ensure laptop volume is turned up; browser speech synthesis (`window.speechSynthesis`) is fully offline and does not require internet.
+
 
 

@@ -1,3 +1,11 @@
+import sys
+import os
+
+if sys.stdout and hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if sys.stderr and hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -106,7 +114,8 @@ def send_frame(frame):
 # CONFIG
 # ============================================================
 
-EXPERIMENT_FILE = "experiments/syringe_transfer.json"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+EXPERIMENT_FILE = os.path.join(BASE_DIR, "experiments", "syringe_transfer.json")
 
 CAMERA_INDEX = 0
 
@@ -1012,6 +1021,8 @@ hands = mp_hands.Hands(
 # ============================================================
 
 camera = cv2.VideoCapture(CAMERA_INDEX)
+if not camera.isOpened():
+    camera = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)
 
 if not camera.isOpened():
     print("❌ Camera unavailable")

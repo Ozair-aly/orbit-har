@@ -1,6 +1,7 @@
 import RecordingControls from "../components/RecordingControls";
+import { BACKEND_URL } from "../config.js";
 
-const cameraUrl = "http://127.0.0.1:8000/video";
+const cameraUrl = `${BACKEND_URL}/video`;
 
 function formatObjectName(name) {
   return name
@@ -268,7 +269,7 @@ function Monitoring({
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/experiment/stop",
+        `${BACKEND_URL}/experiment/stop`,
         {
           method: "POST",
         }

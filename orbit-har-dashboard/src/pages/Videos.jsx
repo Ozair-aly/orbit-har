@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { BACKEND_URL } from "../config.js";
 
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = BACKEND_URL;
 const VIDEOS_URL = `${BASE_URL}/videos`;
 
 function formatBytes(bytes) {

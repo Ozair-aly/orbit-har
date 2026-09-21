@@ -1,3 +1,11 @@
+import sys
+import os
+
+if sys.stdout and hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if sys.stderr and hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 from fastapi import FastAPI, WebSocket, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
@@ -5,15 +13,15 @@ from fastapi.responses import StreamingResponse
 import cv2
 import asyncio
 import time
-import os
 import json
 from datetime import datetime
 import numpy as np
 import subprocess
-import sys
  
 from recording import router as recording_router, recording_manager
- 
+
+CLOUD_MODE = os.environ.get("CLOUD_MODE", "false").lower() in ("true", "1", "yes")
+
 app = FastAPI(title="ORBIT-HAR Backend")
  
 # ==========================================
@@ -274,6 +282,12 @@ async def start_human_mesh():
 
     global human_mesh_process
 
+    if CLOUD_MODE:
+        return {
+            "status": "error",
+            "message": "3D Human Mesh requires local camera and display hardware and is only available in local/offline mode.",
+        }
+
     # Already running
     if (
         human_mesh_process is not None
@@ -471,6 +485,12 @@ async def start_experiment(data: dict):
 
     global active_experiment
     global experiment_process
+
+    if CLOUD_MODE:
+        return {
+            "status": "error",
+            "message": "Physical experiment AI camera tracking requires a local webcam/hardware and is only available in local/offline mode.",
+        }
 
     experiment_name = data.get(
         "name",
@@ -1045,3 +1065,15 @@ def read_text_file(filename: str):
             "status": "error",
             "message": str(e)
         }
+
+
+# ==========================================
+# ENTRYPOINT (RENDER & DIRECT EXECUTION)
+# ==========================================
+
+if __name__ == "__main__":
+    import uvicorn
+
+    port = int(os.environ.get("PORT", 8000))
+    host = os.environ.get("HOST", "0.0.0.0" if CLOUD_MODE else "127.0.0.1")
+    uvicorn.run("main:app", host=host, port=port, reload=False)

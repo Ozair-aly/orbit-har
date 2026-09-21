@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { BACKEND_URL } from "../config.js";
 
-const LOGS_URL = "http://127.0.0.1:8000/logs";
+const LOGS_URL = `${BACKEND_URL}/logs`;
 
 const FILTERS = [
   { key: "ALL", label: "All" },

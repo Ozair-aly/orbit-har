@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { WS_URL, BACKEND_URL } from "../config.js";
 
-const WS_URL = "ws://127.0.0.1:8000/ws";
-const CAMERA_STATUS_URL = "http://127.0.0.1:8000/camera/status";
+const CAMERA_STATUS_URL = `${BACKEND_URL}/camera/status`;
 
 export function useOrbitSocket() {
 

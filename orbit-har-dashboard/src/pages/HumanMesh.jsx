@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
+import { BACKEND_URL, HUMAN_MESH_URL } from "../config.js";
 
 function HumanMesh() {
 
   const [running, setRunning] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const BACKEND = "http://127.0.0.1:8000";
-  const HUMAN_MESH = "http://127.0.0.1:8010";
+  const BACKEND = BACKEND_URL;
+  const HUMAN_MESH = HUMAN_MESH_URL;
 
 
   // ==========================================
@@ -59,6 +61,7 @@ function HumanMesh() {
   const startHumanMesh = async () => {
 
     setLoading(true);
+    setErrorMessage("");
 
     try {
 
@@ -71,10 +74,11 @@ function HumanMesh() {
 
       const data = await response.json();
 
-      if (data.running) {
-
+      if (data.status === "error") {
+        setErrorMessage(data.message || "Failed to start 3D Human Mesh");
+        alert(data.message || "Failed to start 3D Human Mesh");
+      } else if (data.running) {
         setRunning(true);
-
       }
 
     } catch (error) {
@@ -83,6 +87,7 @@ function HumanMesh() {
         "Human 3D start failed:",
         error
       );
+      setErrorMessage("Could not connect to backend to start 3D Human Mesh.");
 
     }
 
